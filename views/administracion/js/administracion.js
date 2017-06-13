@@ -292,13 +292,6 @@ $(document).ready(function() {
 		 					$('#contenedor_oculto').css('display','inline')
 		 					//$('#buscar').attr('disabled','disabled')
 		 					
-		 					setTimeout(function(){ 
-		 						
-		 						$('#buscar').css('display', 'inline'); 
-		 						$('#icono_reloaded').css('display','none')
-		 					
-		 					}, 3000);
-		 					
 		 					responsiveHelper_dt_basic = undefined
 		 					$('#dt_basic').dataTable().fnDestroy();
 		 					$('#dt_basic').dataTable({

@@ -208,6 +208,8 @@ $(document).ready(function() {
 		var re = /^(-)?[0-9]*$/ 
 		$('#derivar_si').css('display','none')
 		$('#buscar').css('display', 'none'); 
+		$('#criterios').attr('disabled', 'disabled'); 
+		$('#criterio_digitar').attr('disabled', 'disabled'); 
 		$('#icono_reloaded').css('display','inline')
 			
 		if(criterios==0 || criterios=='0' || criterios==''){
@@ -408,6 +410,8 @@ $(document).ready(function() {
 		 				        	   if(conteo>=1){
 		 				        		  $('#buscar').css('display','inline') 
 		 				        		  $('#icono_reloaded').css('display','none')
+		 				        		  $('#criterios').attr('disabled', false); 
+		 				        		  $('#criterio_digitar').attr('disabled', false); 
 		 				        	   }
 		 			                //console.log('Total row count on load - ', $('#dt_basic').dataTable().fnGetData().length);
 		 			            },

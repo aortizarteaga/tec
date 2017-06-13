@@ -408,7 +408,16 @@ $(document).ready(function() {
 		 				           		},
 		 				           	"drawCallback" : function(oSettings) {
 		 				           			responsiveHelper_dt_basic.respond();
-		 				           		}
+		 				           		},
+		 				           "fnDrawCallback": function (oSettings) {
+		 				        	   var conteo=$('#dt_basic').dataTable().fnGetData().length
+		 				        	   
+		 				        	   if(conteo>=1){
+		 				        		  $('#buscar').css('display','inline') 
+		 				        		  $('#icono_reloaded').css('display','none')
+		 				        	   }
+		 			                //console.log('Total row count on load - ', $('#dt_basic').dataTable().fnGetData().length);
+		 			            },
 		 					});
 		 					
 		 					

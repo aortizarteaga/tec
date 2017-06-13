@@ -207,7 +207,8 @@ $(document).ready(function() {
 		var pedido
 		var re = /^(-)?[0-9]*$/ 
 		$('#derivar_si').css('display','none')
-		
+		$('#buscar').css('display', 'none'); 
+		$('#icono_reloaded').css('display','inline')
 			
 		if(criterios==0 || criterios=='0' || criterios==''){
 			$('#criterios').popover({
@@ -399,7 +400,16 @@ $(document).ready(function() {
 		 				           		},
 		 				           	"drawCallback" : function(oSettings) {
 		 				           			responsiveHelper_dt_basic.respond();
-		 				           		}
+		 				           		},
+		 				           "fnDrawCallback": function (oSettings) {
+		 				        	   var conteo=$('#dt_basic').dataTable().fnGetData().length
+		 				        	   
+		 				        	   if(conteo>=1){
+		 				        		  $('#buscar').css('display','inline') 
+		 				        		  $('#icono_reloaded').css('display','none')
+		 				        	   }
+		 			                //console.log('Total row count on load - ', $('#dt_basic').dataTable().fnGetData().length);
+		 			            },
 		 					});
 		 				}
 		 			}				

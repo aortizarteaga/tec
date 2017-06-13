@@ -207,7 +207,8 @@ $(document).ready(function() {
 		var pedido
 		var re = /^(-)?[0-9]*$/ 
 		$('#derivar_si').css('display','none')
-		
+		$('#buscar').css('display', 'none'); 
+		$('#icono_reloaded').css('display','inline')
 			
 		if(criterios==0 || criterios=='0' || criterios==''){
 			$('#criterios').popover({
@@ -289,6 +290,14 @@ $(document).ready(function() {
 		 				else{
 		 					$('#derivar_si').css('display','none')
 		 					$('#contenedor_oculto').css('display','inline')
+		 					//$('#buscar').attr('disabled','disabled')
+		 					
+		 					setTimeout(function(){ 
+		 						
+		 						$('#buscar').css('display', 'inline'); 
+		 						$('#icono_reloaded').css('display','none')
+		 					
+		 					}, 3000);
 		 					
 		 					responsiveHelper_dt_basic = undefined
 		 					$('#dt_basic').dataTable().fnDestroy();
@@ -401,6 +410,8 @@ $(document).ready(function() {
 		 				           			responsiveHelper_dt_basic.respond();
 		 				           		}
 		 					});
+		 					
+		 					
 		 				}
 		 			}				
 			   	});

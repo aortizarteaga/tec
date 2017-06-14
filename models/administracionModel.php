@@ -41,6 +41,18 @@ class administracionModel extends Model {
 	
 	}
 	
+	public function getTrazabilidadbusqueda($pedido){
+	
+			$sql_contar="SELECT * FROM tec WHERE pet_req='$pedido'";
+	
+			$prod = $this->_db->prepare($sql_contar);
+			$prod->execute();
+			$conteo=$prod->rowCount();
+				
+			return $conteo;
+	
+	}
+	
 	public function getPedido($input,$criterios){
 		set_time_limit(60);
 		if($criterios==1){

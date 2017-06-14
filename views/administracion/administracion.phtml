@@ -64,34 +64,65 @@
 
 									<fieldset>
 										<div class="row">
-										   <section class="col col-1">
-										   <label class="label">Pedido</label>
-										   </section>
-										   <section class="col col-2">
-													<label class="select">
-														<select class="input-sm" id="criterios">
+											<div class="col-md-6">
+												<section class="col col-2">
+													<label class="label">Pedido</label>
+												</section>
+												<section class="col col-4">
+													<label class="select"> <select class="input-sm"
+														id="criterios">
 															<option value="0">SELECCIONE</option>
 															<option value="1">DNI</option>
 															<option value="2">PETICION</option>
-														</select> <i></i> 
-														<b id="combo_tooltip" class="tooltip tooltip-top-right" style="display: none"></b>
-													 </label>
-											</section>
-											<section class="col col-2">
-												<label class="input">
-													<input id="criterio_digitar" type="text" placeholder="Criterio*" class="input-sm">
-													<b id="criterio_tooltip" class="tooltip tooltip-top-right" style="display: none"></b>
-												</label>
-											</section>
-											<section class="col col-2">
-												<a id="buscar" class="btn btn-success btn-sm" style="background-color: #48c400;cursor: pointer;">Buscar</a>
-												<section class="col col-1" id="icono_reloaded" style="display: none;">
-													<i class="fa fa-cog fa-spin fa-2x fa-fw" style="color: #003341;"></i>
+													</select> <i></i> <b id="combo_tooltip"
+														class="tooltip tooltip-top-right" style="display: none"></b>
+													</label>
 												</section>
-											</section>
-											<section class="col col-1">
-												<a id="derivar_si" title='Derivar' class='btn btn-danger btn-sm' style='display:none;background-color: red'>Derivar</a>
-											</section>
+												<section class="col col-4">
+													<label class="input"> <input id="criterio_digitar"
+														type="text" placeholder="Criterio*" class="input-sm"> <b
+														id="criterio_tooltip" class="tooltip tooltip-top-right"
+														style="display: none"></b>
+													</label>
+												</section>
+												<section class="col col-2">
+													<a id="buscar" class="btn btn-success btn-sm"
+														style="background-color: #48c400; cursor: pointer;">Buscar</a>
+													<section class="col col-1" id="icono_reloaded"
+														style="display: none;">
+														<i class="fa fa-cog fa-spin fa-2x fa-fw"
+															style="color: #003341;"></i>
+													</section>
+												</section>
+											</div>
+
+											<div class="col-md-6">
+												<section class="col col-1">
+												</section>
+												<section class="col col-4">
+													<label style="display: none" id="opciones_trazabilidad_pedido" class="label">Opciones Adicionales</label>
+												</section>
+												<section class="col col-2">
+													<a id="derivar_si" title='Derivar'
+														class='btn btn-danger btn-sm'
+														style='display: none; background-color: red'>Derivar</a>
+												</section>
+												
+												<section class="col col-3">
+													<a id="trazabilidad_si" title='Trazabilidad TEC'
+														class='btn btn-success btn-sm'
+														style='display: none; background-color: #003341'>Trazabilidad TEC</a>
+												</section>
+												
+												<div class="col-sm-2">		
+													<label class="input"> 
+														<div class="form-group" id="error_trazabilidad_pedido" style="display: none">
+															<input id="pedido_trazabilidad" type="text" placeholder="Pedido*" 
+															class="input-sm">
+														</div>
+													</label>				
+												</div>
+											</div>
 										</div>
 									</fieldset>
 										<br>

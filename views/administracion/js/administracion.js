@@ -170,6 +170,9 @@ $(document).ready(function() {
 			$('#criterios').popover('destroy')
 			
 			$('#derivar_si').css('display','none')
+			$('#trazabilidad_si').css('display','none')
+			$('#opciones_trazabilidad_pedido').css('display','none')
+			$('#error_trazabilidad_pedido').css('display','none')
 		}
 		else if(criterios==1 || criterios=='1'){
 			$('#criterio_digitar').val('')
@@ -181,6 +184,9 @@ $(document).ready(function() {
 			$('#criterios').popover('destroy')
 			
 			$('#derivar_si').css('display','none')
+			$('#trazabilidad_si').css('display','none')
+			$('#opciones_trazabilidad_pedido').css('display','none')
+			$('#error_trazabilidad_pedido').css('display','none')
 		}
 		else if(criterios==2 || criterios=='2'){
 			$('#criterio_digitar').val('')
@@ -192,6 +198,9 @@ $(document).ready(function() {
 			$('#criterios').popover('destroy')
 			
 			$('#derivar_si').css('display','none')
+			$('#trazabilidad_si').css('display','none')
+			$('#opciones_trazabilidad_pedido').css('display','none')
+			$('#error_trazabilidad_pedido').css('display','none')
 		}
 	})
 	
@@ -207,6 +216,13 @@ $(document).ready(function() {
 		var pedido
 		var re = /^(-)?[0-9]*$/ 
 		$('#derivar_si').css('display','none')
+		$('#trazabilidad_si').css('display','none')
+		$('#opciones_trazabilidad_pedido').css('display','none')
+		$('#error_trazabilidad_pedido').css('display','none')
+		$('#error_trazabilidad_pedido').removeClass('has-error')
+		$('#pedido_trazabilidad').removeClass('ui-autocomplete-loading')
+		$('#pedido_trazabilidad').val('')
+		
 			
 		if(criterios==0 || criterios=='0' || criterios==''){
 			$('#criterios').popover({
@@ -286,6 +302,9 @@ $(document).ready(function() {
 		 						icon : "fa fa-warning swing animated"
 		 					});
 		 					$('#derivar_si').css('display','inline')
+		 					$('#trazabilidad_si').css('display','inline')
+		 					$('#opciones_trazabilidad_pedido').css('display','inline')
+		 					$('#error_trazabilidad_pedido').css('display','inline')
 		 					$('#contenedor_oculto').css('display','none')
 		 					$('#dt_basic').dataTable().fnDestroy();
 		 					
@@ -296,6 +315,9 @@ $(document).ready(function() {
 		 				}
 		 				else{
 		 					$('#derivar_si').css('display','none')
+		 					$('#trazabilidad_si').css('display','none')
+		 					$('#opciones_trazabilidad_pedido').css('display','none')
+		 					$('#error_trazabilidad_pedido').css('display','none')
 		 					$('#contenedor_oculto').css('display','inline')
 		 					//$('#buscar').attr('disabled','disabled')
 		 					
@@ -439,6 +461,9 @@ $(document).ready(function() {
 		var pedido
 		var re = /^(-)?[0-9]*$/ 
 		$('#derivar_si').css('display','none')
+		$('#trazabilidad_si').css('display','none')
+		$('#opciones_trazabilidad_pedido').css('display','none')
+		$('#error_trazabilidad_pedido').css('display','none')
 		
 		responsiveHelper_dt_basic = undefined
 			$('#dt_basic').dataTable().fnDestroy();
@@ -921,6 +946,119 @@ $(document).ready(function() {
  				}				
  		 });
 	})
+	
+	$('#pedido_trazabilidad').keyup(function(){
+		$('#pedido_trazabilidad').popover('disable')
+		$('#pedido_trazabilidad').popover('hide')
+		$('#pedido_trazabilidad').popover('destroy')
+	})
+	
+	
+	 $('#trazabilidad_si').click(function(){
+		 var pedido=$('#pedido_trazabilidad').val()
+		 $('#error_trazabilidad_pedido').removeClass('has-error')
+		 $('#pedido_trazabilidad').removeClass('ui-autocomplete-loading')
+		 
+		 var re = /^(-)?[0-9]*$/ 
+		 
+		 	if(pedido=='' || pedido==null){
+				$('#pedido_trazabilidad').popover({
+					html: true,
+					placement:'top',
+					title: 'CORREGIR',
+					trigger: 'focus',
+					content: 'Ingrese el pedido'
+				});
+				$("#pedido_trazabilidad").focus()
+			}
+			else if(!re.test(pedido)==true){
+				$('#pedido_trazabilidad').popover({
+					html: true,
+					placement:'top',
+					title: '<i class="fa fa-warning"></i> CORREGIR',
+					trigger: 'focus',
+					content: 'Solo caracteres numericos'
+				});
+				$('#pedido_trazabilidad').focus()
+			}
+			else if(pedido.length<6){
+				$('#pedido_trazabilidad').popover({
+					html: true,
+					placement:'top',
+					title: '<i class="fa fa-warning"></i> CORREGIR',
+					trigger: 'focus',
+					content: 'Criterio invalido'
+				});
+				$('#pedido_trazabilidad').focus()
+			}
+			else if(pedido.length>9){
+				$('#pedido_trazabilidad').popover({
+					html: true,
+					placement:'top',
+					title: '<i class="fa fa-warning"></i> CORREGIR',
+					trigger: 'focus',
+					content: 'Pedido invalido'
+				});
+				$('#pedido_trazabilidad').focus()
+			}
+			else{
+				$('#pedido_trazabilidad').addClass('ui-autocomplete-loading')
+				
+				$.ajax({
+		 			url: '../administracion/getTrazabilidadbusqueda',  
+		 			type: 'POST',
+		 			data: {
+		 				pedido: pedido
+	  	            },
+		 			success: function(data){
+		 				if(data==0){
+		 					$('#error_trazabilidad_pedido').addClass('has-error')
+		 					$('#pedido_trazabilidad').removeClass('ui-autocomplete-loading')
+		 					$('#pedido_trazabilidad').focus()
+		 				}
+		 				else{
+		 					$('#pedido_trazabilidad').removeClass('ui-autocomplete-loading')
+		 					idcodigo=pedido
+		 					$.post('../administracion/getDatostec/' + idcodigo, function(data) {
+		 						var myarray = data.split(",")
+		 						$('#tipo_tec').text(myarray[0].trim())
+		 						$('#contacto_tec').text(myarray[1].trim())
+		 						$('#telefono1_tec').text(myarray[2].trim())
+		 						$('#telefono2_tec').text(myarray[3].trim())
+		 						$('#casuistica_tec').text(myarray[4].trim())
+		 						$('#motivo_tec').text(myarray[5].trim())
+		 						$('#fagenda_tec').text(myarray[8].trim())
+		 						$('#hagenda_tec').text(myarray[9].trim())
+		 						$('#observacion_tec').text(myarray[6].trim())
+		 						$('#direccion_tec').text(myarray[7].trim())
+		 					});
+		 					 
+		 					 
+		 					 $('#codigo_pedido_tec').val(idcodigo)
+		 					 $('#myModalLabel_tec').html("<div class='widget-header'><h4><i class='fa fa-archive'></i> Trazabilidad TEC del Pedido Nro "+"<strong>"+idcodigo+"</strong></h4></div>");
+		 					 $('#myModal_tec').modal()
+		 					 $('#enviado_boton_derivar').val('')
+		 					 tabla_tec()
+		 					 
+		 					 $.ajax({
+		 			 			url: '../administracion/getNumeroreiterado',  
+		 			 				type: 'POST',
+		 			 			    data: {
+		 			 				        idcodigo:idcodigo
+		 			 				},
+		 			 				success: function(s){
+		 			 				    $("#conteo_reiterados").html(s+" Reiterados")
+		 			 				}				
+		 			 		 });
+		 					
+		 				}
+		 			}  
+				})
+				
+			}
+		 
+	 })
+	
 	
 	
 	function tabla_reiterado(){

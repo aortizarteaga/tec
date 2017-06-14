@@ -30,6 +30,22 @@ class administracionController extends Controller {
 
 	}
 	
+	public function getTrazabilidadbusqueda(){
+	
+		$pedido=trim($_POST['pedido']);
+	
+		$objModel=$this->loadModel('administracion');
+		$pedidos_busqueda=$objModel->getTrazabilidadbusqueda($pedido);
+	
+		if($pedidos_busqueda>=1){
+			echo "1";
+		}
+		else{
+			echo "0";
+		}
+	
+	}
+	
 	public function getTecdatos(){
 		
 		$pedido=trim($_POST['pedido']);

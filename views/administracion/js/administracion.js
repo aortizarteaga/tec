@@ -288,6 +288,11 @@ $(document).ready(function() {
 		 					$('#derivar_si').css('display','inline')
 		 					$('#contenedor_oculto').css('display','none')
 		 					$('#dt_basic').dataTable().fnDestroy();
+		 					
+		 					$('#buscar').css('display','inline') 
+			        		$('#icono_reloaded').css('display','none')
+			        		$('#criterios').attr('disabled', false); 
+			        		$('#criterio_digitar').attr('disabled', false); 
 		 				}
 		 				else{
 		 					$('#derivar_si').css('display','none')

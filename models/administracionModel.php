@@ -66,17 +66,18 @@ class administracionModel extends Model {
 			
 			$var_codigo=$var_codigo."'000000'";
 			
-			$sql = "SELECT A.codigo_pedido,A.estado,A.fecha_registro_registro,A.estado_movimiento,A.fecha_registro,A.fecha_ultimo_movimiento,A.opciones FROM(
+			$sql = "SELECT A.codigo_pedido,A.estado,A.fecha_registro_pedido,A.fecha_registro_registro,A.estado_movimiento,A.fecha_registro,A.fecha_ultimo_movimiento,A.opciones FROM(
 					SELECT 
 					DISTINCT 
 					rc.`codigo_pedido`, 
 					'REGISTRO' AS estado,
+					rc.`fecha_registro_gestion` AS fecha_registro_pedido,
 					rc.`fecha_llamada` AS fecha_registro_registro,
 					nc.estado_movimiento,
 					nc.fecha_registro,
 					nc.fecha_ultimo_movimiento,
 					'' AS opciones
-					FROM (select codigo_pedido,fecha_llamada,documento from ase_tec_base_registro_ciat where `codigo_pedido` IN ($var_codigo) 
+					FROM (select codigo_pedido,fecha_llamada,documento,fecha_registro_gestion from ase_tec_base_registro_ciat where `codigo_pedido` IN ($var_codigo) 
 					and documento='$input') rc
 					LEFT JOIN  (
 					SELECT A.codigo_pedido,A.estado_movimiento,max(A.fecha_registro) as fecha_registro,A.fecha_ultimo_movimiento FROM(	
@@ -97,6 +98,7 @@ class administracionModel extends Model {
 					DISTINCT 
 					pc.`codigo_pedido` AS `codigo_pedido`, 
 					'' AS 'estado',
+					'' AS 'fecha_registro_pedido',
 					'' AS 'fecha_registro_registro',
 					nc.estado_movimiento,
 					nc.fecha_registro,
@@ -140,6 +142,7 @@ class administracionModel extends Model {
 			$sql = "SELECT
 					IF(A.codigo_pedido IS NULL,C.codigo_pedido,A.codigo_pedido) AS codigo_pedido,
 					A.descripcion AS estado,
+					A.fecha_registro_pedido,
 					A.fecha_registro_registro,
 					C.descripcion AS estado_movimiento,
 					C.fecha_registro,
@@ -148,6 +151,7 @@ class administracionModel extends Model {
 					FROM(
 					SELECT
 					codigo_pedido,
+					rc.`fecha_registro_gestion` AS fecha_registro_pedido,
 					rc.fecha_llamada AS fecha_registro_registro,
 					ts.descripcion
 					FROM `ase_tec_base_registro_ciat`  rc INNER JOIN

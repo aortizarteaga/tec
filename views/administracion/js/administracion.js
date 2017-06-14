@@ -207,10 +207,6 @@ $(document).ready(function() {
 		var pedido
 		var re = /^(-)?[0-9]*$/ 
 		$('#derivar_si').css('display','none')
-		$('#buscar').css('display', 'none'); 
-		$('#criterios').attr('disabled', 'disabled'); 
-		$('#criterio_digitar').attr('disabled', 'disabled'); 
-		$('#icono_reloaded').css('display','inline')
 			
 		if(criterios==0 || criterios=='0' || criterios==''){
 			$('#criterios').popover({
@@ -267,6 +263,10 @@ $(document).ready(function() {
 			$('#criterio_digitar').focus()
 		}
 		else{
+			$('#buscar').css('display', 'none'); 
+			$('#criterios').attr('disabled', 'disabled'); 
+			$('#criterio_digitar').attr('disabled', 'disabled'); 
+			$('#icono_reloaded').css('display','inline')
 			 $.ajax({
 		 			url: '../administracion/getBusqueda',  
 		 			type: 'POST',
@@ -328,6 +328,7 @@ $(document).ready(function() {
 		 				                    		$(nTd).html(""+data+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id_codigo='"+oData.codigo_pedido+"' class='bitacora fa fa-archive' title='Consultar Trazabilidad' style='"+icono+"'></a>")
 		 				                    	} 
 		 				                    },
+		 				                    { "data": "fecha_registro_pedido" },
 		 				                    { "data": "fecha_registro_registro" },
 		 				                    { "data": "estado_movimiento" ,
 		 				                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {

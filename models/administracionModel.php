@@ -207,6 +207,7 @@ class administracionModel extends Model {
 				rc.observacion_gestion,
 				rc.`pedido_vuelo`,
 				rc.flg_dependencia,
+				rc.fecha_registro_gestion AS fecha_registro,
 				rc.fecha_llamada AS fecha,
 				ts.descripcion
 				FROM `ase_tec_base_registro_ciat`  rc INNER JOIN 

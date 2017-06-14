@@ -617,6 +617,7 @@ $(document).ready(function() {
 		                    { "data": "observacion_gestion" },
 		                    { "data": "pedido_vuelo" },
 		                    { "data": "flg_dependencia" },
+		                    { "data": "fecha_registro" },
 		                    { "data": "fecha" },
 		                    { "data": "descripcion" }
 		                   ],

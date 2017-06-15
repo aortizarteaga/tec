@@ -41,18 +41,6 @@ class administracionModel extends Model {
 	
 	}
 	
-	public function getTrazabilidadbusqueda($pedido){
-	
-			$sql_contar="SELECT * FROM tec WHERE pet_req='$pedido'";
-	
-			$prod = $this->_db->prepare($sql_contar);
-			$prod->execute();
-			$conteo=$prod->rowCount();
-				
-			return $conteo;
-	
-	}
-	
 	public function getPedido($input,$criterios){
 		set_time_limit(60);
 		if($criterios==1){
@@ -78,18 +66,17 @@ class administracionModel extends Model {
 			
 			$var_codigo=$var_codigo."'000000'";
 			
-			$sql = "SELECT A.codigo_pedido,A.estado,A.fecha_registro_pedido,A.fecha_registro_registro,A.estado_movimiento,A.fecha_registro,A.fecha_ultimo_movimiento,A.opciones FROM(
+			$sql = "SELECT A.codigo_pedido,A.estado,A.fecha_registro_registro,A.estado_movimiento,A.fecha_registro,A.fecha_ultimo_movimiento,A.opciones FROM(
 					SELECT 
 					DISTINCT 
 					rc.`codigo_pedido`, 
 					'REGISTRO' AS estado,
-					rc.`fecha_registro_gestion` AS fecha_registro_pedido,
 					rc.`fecha_llamada` AS fecha_registro_registro,
 					nc.estado_movimiento,
 					nc.fecha_registro,
 					nc.fecha_ultimo_movimiento,
 					'' AS opciones
-					FROM (select codigo_pedido,fecha_llamada,documento,fecha_registro_gestion from ase_tec_base_registro_ciat where `codigo_pedido` IN ($var_codigo) 
+					FROM (select codigo_pedido,fecha_llamada,documento from ase_tec_base_registro_ciat where `codigo_pedido` IN ($var_codigo) 
 					and documento='$input') rc
 					LEFT JOIN  (
 					SELECT A.codigo_pedido,A.estado_movimiento,max(A.fecha_registro) as fecha_registro,A.fecha_ultimo_movimiento FROM(	
@@ -110,7 +97,6 @@ class administracionModel extends Model {
 					DISTINCT 
 					pc.`codigo_pedido` AS `codigo_pedido`, 
 					'' AS 'estado',
-					'' AS 'fecha_registro_pedido',
 					'' AS 'fecha_registro_registro',
 					nc.estado_movimiento,
 					nc.fecha_registro,
@@ -154,7 +140,6 @@ class administracionModel extends Model {
 			$sql = "SELECT
 					IF(A.codigo_pedido IS NULL,C.codigo_pedido,A.codigo_pedido) AS codigo_pedido,
 					A.descripcion AS estado,
-					A.fecha_registro_pedido,
 					A.fecha_registro_registro,
 					C.descripcion AS estado_movimiento,
 					C.fecha_registro,
@@ -163,7 +148,6 @@ class administracionModel extends Model {
 					FROM(
 					SELECT
 					codigo_pedido,
-					rc.`fecha_registro_gestion` AS fecha_registro_pedido,
 					rc.fecha_llamada AS fecha_registro_registro,
 					ts.descripcion
 					FROM `ase_tec_base_registro_ciat`  rc INNER JOIN
@@ -172,21 +156,21 @@ class administracionModel extends Model {
 					$join JOIN (
 					SELECT C.codigo_pedido,C.descripcion,C.fecha_registro,C.fecha_registro_sistema,C.codigo_requerimiento FROM(
 					SELECT * FROM(
-					SELECT IF(IF(codigo_pedido IS NULL,codigo_requerimiento,codigo_pedido)!='$input','$input','$input') as codigo_pedido,
+					SELECT codigo_pedido,
 					fecha_registro_pendiente AS fecha_registro,
 					fecha_registro_atis AS fecha_registro_sistema,
 					ts.descripcion,codigo_requerimiento FROM `ase_tec_base_pendiente_ciat`  pc INNER JOIN
 					`ase_tec_situacion` ts ON pc.id_situacion=ts.id_tec_situacion
 					WHERE codigo_pedido='$input' OR codigo_requerimiento='$input'
 					UNION ALL
-					SELECT IF(IF(codigo_pedido IS NULL,codigo_requerimiento,codigo_pedido)!='$input','$input','$input') as codigo_pedido,
+					SELECT codigo_pedido,
 					ec.fecha_registro_cancelado AS fecha_registro,
 					ec.fecha_cancelado AS fecha_registro_sistema,
 					ts.descripcion,codigo_requerimiento FROM `ase_tec_base_cancelada` ec INNER JOIN
 					`ase_tec_situacion` ts ON ec.id_situacion=ts.id_tec_situacion
 					WHERE codigo_pedido='$input' OR codigo_requerimiento='$input'
 					UNION ALL
-					SELECT IF(IF(codigo_pedido IS NULL,codigo_requerimiento,codigo_pedido)!='$input','$input','$input') as codigo_pedido,
+					SELECT codigo_pedido,
 					ejc.fecha_registro_ejecutada AS fecha_registro,
 					ejc.fecha_ejecucion AS fecha_registro_sistema,
 					ts.descripcion,codigo_requerimiento FROM `ase_tec_base_ejecutada_ciat` ejc INNER JOIN
@@ -219,7 +203,6 @@ class administracionModel extends Model {
 				rc.observacion_gestion,
 				rc.`pedido_vuelo`,
 				rc.flg_dependencia,
-				rc.fecha_registro_gestion AS fecha_registro,
 				rc.fecha_llamada AS fecha,
 				ts.descripcion
 				FROM `ase_tec_base_registro_ciat`  rc INNER JOIN 
@@ -245,7 +228,7 @@ class administracionModel extends Model {
 				descripcion AS observacion,
 				'PENDIENTE' AS situacion
 				FROM `ase_tec_base_pendiente_ciat`
-				WHERE codigo_pedido='$idcodigo' OR codigo_requerimiento='$idcodigo'
+				WHERE codigo_pedido='$idcodigo'
 				UNION ALL
 				SELECT
 				'' AS 'documento',
@@ -258,7 +241,7 @@ class administracionModel extends Model {
 				observacion,
 				'CANCELADAS' AS situacion
 				FROM `ase_tec_base_cancelada`
-				WHERE codigo_pedido='$idcodigo' OR codigo_requerimiento='$idcodigo'
+				WHERE codigo_pedido='$idcodigo'
 				UNION ALL
 				SELECT
 				'' AS 'documento',
@@ -271,7 +254,7 @@ class administracionModel extends Model {
 				descripcion AS observacion,
 				'EJECUTADAS' AS situacion
 				FROM `ase_tec_base_ejecutada_ciat`
-				WHERE codigo_pedido='$idcodigo' OR codigo_requerimiento='$idcodigo'";
+				WHERE codigo_pedido='$idcodigo'";
 	
 		$prod = $this->_db->prepare($sql);
 		$prod->execute();
@@ -331,6 +314,31 @@ class administracionModel extends Model {
 		return $prod;
 	}
 	
+	public function insertDerivar($gestion,$actividado,$codigo_pedido,$telefono,$tematico_combo,$obs_derivar,
+					$iduser,$flg_redessociales,$nombre_host,$atividad,$tipo,$tematico2_combo,$contacto_instalar,$fecha_agenda,
+					$turno_combo,$telefono_secundario_derivar,$direccion_derivar){
+					
+				$sql_insert = "INSERT INTO `tec`(`gestion`,`actividado`,`pet_req`,`ncontacto`,`estado`,`casuistica`,
+             				`observacion`,`gestor`,`prioridad`,`pc_usu`,`actividad`,`tipo`,`ncontacto2`,motivo,nombre_contacto,
+             				direccion,feci_age,horai_age) 
+             				VALUES ('$gestion','$actividado','$codigo_pedido','$telefono','EN PROCESO','$tematico_combo','$obs_derivar',
+							'$iduser','$flg_redessociales','$nombre_host','$atividad','$tipo','$telefono_secundario_derivar',$tematico2_combo,
+							'$contacto_instalar','$direccion_derivar','$fecha_agenda','$turno_combo')";
+	
+				$sql_error = "INSERT INTO `tec`(`gestion`,`actividado`,`pet_req`,`ncontacto`,`casuistica`,
+             				`observacion`,`gestor`,`prioridad`,`pc_usu`,`actividad`,`tipo`,`ncontacto2`,motivo,nombre_contacto,
+             				direccion,feci_age,horai_age) 
+             				VALUES ('$gestion','$actividado','$codigo_pedido','$telefono','EN PROCESO','$tematico_combo','$obs_derivar',
+							'$iduser','$flg_redessociales','$nombre_host','$atividad','$tipo','$telefono_secundario_derivar',$tematico2_combo,
+							'$contacto_instalar','$direccion_derivar','$fecha_agenda','$turno_combo')";
+	
+				$prod = $this->_db->prepare ( $sql_insert );
+				$prod->execute ();
+				$arr = $prod->errorInfo ();
+				array_push ($arr,$sql_error);
+				return $arr;
+	}
+	
 	public function insertError($idcodigo,$id_ult,$iduser,$ip_usr,$tipo_error,$sql_script){
 	
 		$sql = "INSERT INTO ase_tec_log_error(id,nombre_error,id_usr_registro,ip_usr_registro,tipo_error,sql_script)
@@ -345,13 +353,15 @@ class administracionModel extends Model {
 	
 	public function existeDerivar($codigo_pedido){
 					
-		$sql = "SELECT pet_req FROM `tec_mov` WHERE pet_req= :pet_req AND submot=6 
-				AND idDev=(SELECT max(idDev) FROM tec_mov WHERE pet_req=:pet_req)";
+		$sql = "SELECT pet_req FROM `tec` WHERE pet_req= :pet_req AND 
+				situacion IN ('pendiente','registrado') AND usu_bloqueo!=NULL";
 		
 		$prod = $this->_db->prepare ( $sql );
-		$prod->execute (array (':pet_req' => $codigo_pedido));
+		$prod->execute ( array (
+				':pet_req' => $codigo_pedido
+		) );
 		
-		if ($prod->rowCount())
+		if ($prod->rowCount ())
 			return 1;
 		else
 			return 0;
@@ -359,124 +369,90 @@ class administracionModel extends Model {
 	
 	public function getReiterado($codigo_pedido){
 			
-		$sql = "SELECT pedido FROM `ase_tec_reiterado` WHERE pedido= :pet_req";
+		$sql = "SELECT pet_req FROM `tec` WHERE pet_req= :pet_req AND
+				gestion='1RALINEA'";
 	
 		$prod = $this->_db->prepare ( $sql );
-		$prod->execute ( array (':pet_req' => $codigo_pedido) );
-
+		$prod->execute ( array (
+				':pet_req' => $codigo_pedido
+		) );
+	
 		if ($prod->rowCount ())
 			return 1;
 		else
 			return 0;
 	}
 	
-	public function insert_derivar($codigo_pedido,$actividado,$tipo,$tematico_combo,$tematico2_combo,$obs_derivar){
-			
-		$sql = "INSERT INTO ase_tec_reiterado(pedido,tipo,actividad,casuistica,motivo,observacion)
-				VALUES('$codigo_pedido','$tipo','$actividado','$tematico_combo','$tematico2_combo','$obs_derivar')";
-	
+	public function getUpdatereiterado($codigo_pedido,$iduser){
+		
+		$sql = "SELECT pet_req FROM `tec` WHERE pet_req= :pet_req AND
+				situacion IN ('pendiente','registrado') AND usu_bloqueo=''
+				AND idDev=(SELECT MAX(idDev) FROM tec WHERE pet_req=:pet_req)";
+		
 		$prod = $this->_db->prepare ( $sql );
-		$prod->execute ();
-		$arr = $prod->errorInfo ();
-		array_push ($arr,$sql_error);
-		return $arr;
-	}
-	
-	public function update_derivar_tec($gestion,$actividado,$codigo_pedido,$telefono,$tematico_combo,$obs_derivar,
-							$iduser,$prioridad,$nombre_host,$atividad,$tipo,$tematico2_combo,$contacto_instalar,$fecha_agenda,
-							$turno_combo,$telefono_secundario_derivar,$direccion_derivar){
-							
-		$sql_update="UPDATE tec SET 
-					gestion='$gestion',
-					tipo='$tipo',
-					actividado='$actividado',
-					ncontacto='$telefono',
-					ncontacto2='$telefono_secundario_derivar',
-					contacto='$contacto_instalar',
-					casuistica='$tematico_combo',
-					motivo='$tematico2_combo',
-					observacion='$obs_derivar',
-					direccion='$direccion_derivar',
-					feci_age='$fecha_agenda',
-					horai_age='$turno_combo',
-					pc_usu='$nombre_host',
-					gestor='$iduser'
-					WHERE pet_req='$codigo_pedido'";
-						 
-		$prod = $this->_db->prepare ($sql_update);
-		$prod->execute ();
-		$arr = $prod->errorInfo ();
-		array_push ($arr,$sql_error);
-		return $arr;
-	
-	}
-	
-	public function insertDerivarTec($gestion,$actividado,$codigo_pedido,$telefono,$tematico_combo,$obs_derivar,
-					$iduser,$prioridad,$nombre_host,$atividad,$tipo,$tematico2_combo,$contacto_instalar,$fecha_agenda,
-					$turno_combo,$telefono_secundario_derivar,$direccion_derivar){
-					
-				$sql_insert_tec = "INSERT INTO tec (gestion, tipo, actividado, pet_req, ncontacto, ncontacto2, contacto, 
-								  casuistica, motivo, observacion, direccion, feci_age, horai_age, pc_usu, gestor )
-								  VALUES('$gestion','$tipo','$actividado','$codigo_pedido','$telefono','$telefono_secundario_derivar','$contacto_instalar',
-								  '$tematico_combo','$tematico2_combo','$obs_derivar','$direccion_derivar','$fecha_agenda','$turno_combo','$nombre_host','$iduser')";
-
-				$prod = $this->_db->prepare ( $sql_insert_tec );
-				$prod->execute ();
-	
-				$sql_error = "INSERT INTO tec (gestion, tipo, actividado, pet_req, ncontacto, ncontacto2, contacto, 
-								  casuistica, motivo, observacion, direccion, feci_age, horai_age, pc_usu, gestor )
-								  VALUES('$gestion','$tipo','$actividado','$codigo_pedido','$telefono','$telefono_secundario_derivar','$contacto_instalar',
-								  '$tematico_combo','$tematico2_combo','$obs_derivar','$direccion_derivar','$fecha_agenda','$turno_combo','$nombre_host','$iduser')";
-	
-				
-				$arr = $prod->errorInfo ();
-				array_push ($arr,$sql_error);
-				return $arr;
-	}
-	
-	public function insertDerivarTecmov($gestion,$actividado,$codigo_pedido,$telefono,$tematico_combo,$obs_derivar,
-					$iduser,$prioridad,$nombre_host,$atividad,$tipo,$tematico2_combo,$contacto_instalar,$fecha_agenda,
-					$turno_combo,$telefono_secundario_derivar,$direccion_derivar){
-					
-				$sql_insert_mov = "INSERT INTO tec_mov (gestion, pet_req, casuistica, motivo, observacion, actividad, prioridad,estado, 
-								  submot,usu_gestion,gestor)
-								  VALUES('$gestion','$codigo_pedido','$tematico_combo','$tematico2_combo','$obs_derivar','$atividad','$prioridad',
-								  'E','1','$usu','$iduser')";
-				
-				$prod = $this->_db->prepare ($sql_insert_mov);
-				$prod->execute ();
-	
-				$sql_error = "INSERT INTO tec_mov (gestion, pet_req, casuistica, motivo, observacion, actividad, prioridad,estado, 
-							  submot,usu_gestion,usu) VALUES('$gestion','$codigo_pedido','$tematico_combo','$tematico2_combo','$obs_derivar',
-							  '$atividad','$prioridad','E','1','$usu','$iduser')";
-				
-				$arr = $prod->errorInfo ();
-				array_push ($arr,$sql_error);
-				return $arr;		
+		$prod->execute ( array (
+				':pet_req' => $codigo_pedido
+		) );
+		
+		$conteo=$prod->rowCount();
+		
+		if ($conteo==1){
+			$sql_update="UPDATE `desarollo-ase`.`tec`
+						 SET 
+						  `tematico1` = '',
+						  `tematico2` = '',
+						  `tematico3` = '',
+						  `tematico4` = '',
+						  `obs_gestio` = '',
+						  `f_gestion` = NOW(),
+						  `situacion` = 'cancelado',
+						  `usu_gestion` = '$iduser'
+						 WHERE `pet_req` = '$codigo_pedido'";
 			
+			$prods = $this->_db->prepare ($sql_update);
+			$prods->execute ();
+			
+			return "1";
+		}
+		else{
+			$sql = "SELECT pet_req FROM `tec` WHERE pet_req=:pet_req AND
+				situacion IN ('gestionado','cancelado') AND usu_gestion!=''
+				AND idDev=(SELECT MAX(idDev) FROM tec WHERE pet_req=:pet_req)";
+			
+			$prod = $this->_db->prepare ( $sql );
+			$prod->execute ( array (
+					':pet_req' => $codigo_pedido
+			) );
+			
+			$conteo=$prod->rowCount();
+			
+			if($conteo==1){
+				return "1";
+			}
+			else{
+				return "0";
+			}
+		}
 	}
 	
 	public function getTec($idcodigo){
 	
-		/* $sql = "SELECT A.tabla,A.actividad,A.casuistica,A.motivo,A.tematico1,A.tematico2,A.tematico3,A.tematico4,A.obs_gestio,A.nuevoped,A.f_carga,A.f_gestion,
-				A.situacion,A.estado,A.descripcion FROM (
-				SELECT 'TEC MOV' as tabla,actividad,casuistica,motivo,tematico1,tematico2,tematico3,tematico4,obs_gestio,nuevoped,situacion,f_carga,f_gestion,et.estado,st.descripcion 
-				FROM tec_mov INNER JOIN submotivotec st ON st.id_submot=tec_mov.submot INNER JOIN estadotec et ON et.id_estado=tec_mov.estado WHERE pet_req='$idcodigo'
-				UNION ALL
-				SELECT 'CANCELACION' as tabla,actividad,casuistica,observacion as motivo,tematico1,tematico2,tematico3,tematico4,obs_gestio,nuevoped,situacion,f_carga,f_gestion,'' as estado,'' as descripcion FROM cancelacion WHERE pet_req='$idcodigo'
-				UNION ALL
-				SELECT 'TECNICAS' as tabla,actividad,casuistica,observacion as motivo,tematico1,tematico2,tematico3,tematico4,obs_gestio,nuevoped,situacion,f_carga,f_gestion,'' as estado,'' as descripcion FROM tecnicas WHERE pet_req='$idcodigo'
-				UNION ALL
-				SELECT 'INSTALACIONES' as tabla,actividad,casuistica,observacion as motivo,tematico1,tematico2,tematico3,tematico4,obs_gestio,nuevoped,situacion,f_carga,f_gestion,'' as estado,'' as descripcion FROM instalaciones WHERE pet_req='$idcodigo'
-				UNION ALL
-				SELECT 'REMEDY' as tabla,actividad,casuistica,observacion as motivo,tematico1,tematico2,tematico3,tematico4,obs_gestio,'',situacion,f_carga,f_gestion,'' as estado,'' as descripcion FROM remedy.remedys WHERE peticion='$idcodigo'
-				ORDER BY f_gestion DESC) AS A"; */
-		
-		 $sql = "SELECT A.tabla,A.actividad,A.casuistica,A.motivo,A.tematico1,A.tematico2,A.tematico3,A.tematico4,A.obs_gestio,A.nuevoped,A.f_carga,A.f_gestion,
-				A.situacion,A.estado,A.descripcion FROM (
-				SELECT 'TEC MOV' as tabla,actividad,casuistica,motivo,tematico1,tematico2,tematico3,tematico4,obs_gestio,nuevoped,situacion,f_carga,f_gestion,et.estado,st.descripcion 
-				FROM tec_mov INNER JOIN submotivotec st ON st.id_submot=tec_mov.submot INNER JOIN estadotec et ON et.id_estado=tec_mov.estado WHERE pet_req='$idcodigo'
-				ORDER BY f_gestion DESC) AS A";
+		$sql = "SELECT
+				gestion,
+				tipo,
+				actividado,
+				casuistica,
+				observacion,
+				tematico1,
+				tematico2,
+				tematico3,
+				tematico4,
+				obs_gestio,
+				f_carga,
+				f_gestion,
+				situacion,
+				usu_gestion
+				FROM `tec` WHERE `pet_req`='$idcodigo'";
 	
 		$prod = $this->_db->prepare($sql);
 		$prod->execute();
@@ -487,7 +463,7 @@ class administracionModel extends Model {
 	
 	public function getmotivo($tematico_combo){
 	
-		$sql = "SELECT descripcion,descripcion FROM ase_tec_motivo WHERE
+		$sql = "SELECT id_tec_motivo,descripcion FROM ase_tec_motivo WHERE
 				flg_activo='Y' AND id_tec_tematico=:id ORDER BY 1 ASC";
 	
 		$prod = $this->_db->prepare($sql);
@@ -542,88 +518,6 @@ class administracionModel extends Model {
 		$arr = $prod->errorInfo ();
 		array_push ($arr,$sql_error);
 		return $arr;
-	}
-	
-	public function getDatostec($idcodigo){
-		$sql = "SELECT 
-				a.tipo,
-				a.contacto,
-				a.ncontacto,
-				a.ncontacto2,
-				a.casuistica,
-				a.motivo,
-				a.observacion,
-				a.direccion,
-				a.feci_age,
-				ha.hora
-				FROM tec a 
-				LEFT JOIN hora_agen ha on ha.id=a.horai_age 
-				WHERE pet_req=:pet_req";
-	
-		$prod = $this->_db->prepare($sql);
-		$prod->execute(array(':pet_req'=>$idcodigo));
-		return $prod->fetch();
-	}
-	
-	public function getReiteradotec($idcodigo){
-	
-		$sql = "SELECT tipo,actividad,fecha_registro,casuistica,motivo,observacion FROM ase_tec_reiterado WHERE pedido='$idcodigo'";
-	
-		$prod = $this->_db->prepare($sql);
-		$prod->execute();
-		$result=$prod->fetchAll(PDO::FETCH_ASSOC);
-		return $result;
-	
-	}
-	
-	public function getNumeroreiterado($idcodigo){
-	
-		$sql = "SELECT * FROM ase_tec_reiterado WHERE pedido='$idcodigo'";
-	
-		$prod = $this->_db->prepare($sql);
-		$prod->execute();
-		$conteo=$prod->rowCount();
-		
-		return $conteo;
-	}
-	
-	public function getAseguram($codigo_pedido){
-			
-		$sql = "SELECT 
-				pet_req
-				FROM `cbc_online` WHERE pet_req='$codigo_pedido'
-				UNION ALL
-				SELECT
-				pet_req
-				FROM `comercial` WHERE pet_req='$codigo_pedido'
-				UNION ALL
-				SELECT
-				pet_req
-				FROM `quiebres` WHERE pet_req='$codigo_pedido'
-				UNION ALL
-				SELECT
-				pet_req
-				FROM `vcp` WHERE pet_req='$codigo_pedido'
-				UNION ALL
-				SELECT
-				observacion AS origen_obs
-				FROM `remedys` WHERE peticion='$codigo_pedido'
-				UNION ALL
-				SELECT
-				pet_req
-				FROM `cancelacion` WHERE pet_req='$codigo_pedido'
-				UNION ALL
-				SELECT
-				pet_req
-				FROM `agenda` WHERE pet_req='$codigo_pedido'";
-	
-		$prod = $this->_db->prepare ( $sql );
-		$prod->execute ();
-
-		if ($prod->rowCount ())
-			return 1;
-		else
-			return 0;
 	}
 }
 ?>	

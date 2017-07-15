@@ -1,17 +1,8 @@
 $(document).ready(function() {
 	pageSetUp();
 	
-	$("#menu").menu();
 	
-	$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-		_title : function(title) {
-			if (!this.options.title) {
-				title.html("&#160;");
-			} else {
-				title.html(this.options.title);
-			}
-		}
-	}));
+	$("#menu").menu();
 	
 	$('#pswd').keyup(function(){
 		$('#malo_update').css('display','none')
@@ -21,88 +12,6 @@ $(document).ready(function() {
 		$('#malo_update2').css('display','none')
 	})
 	
-	$.post('../administracion/updatePswd/', function(data) {
-			update=data
-			
-			if(update==1){
-				
-				var dialog = $("#addtab").dialog({
-					autoOpen : true,
-					width : 600,
-					resizable : false,
-					modal : true,
-					buttons : [ {
-						html : "<i class='fa fa-refresh'></i>&nbsp; Actualizar",
-						"class" : "btn btn-primary",
-						click : function() {
-							var pswd=$("#pswd").val();
-							var pswd2=$("#pswd2").val();
-							
-							var n = pswd.localeCompare(pswd2);
-							
-							if(pswd==''){
-								$('#malo_digitar').html("Ingresar Contrase&ntilde;a");
-								$('#malo_update').css('display','inline')
-								$('#pswd').focus()
-								$("#pswd").val('');
-							}
-							else if(pswd.length<6){
-								$('#malo_digitar').html("El numero de caracteres debe ser mayor a 5");
-								$('#malo_update').css('display','inline')
-								$('#pswd').focus()
-								$("#pswd").val('');
-							}
-							else if(pswd2==''){
-								$('#malo_digitar2').html("Ingresar nuevamente Contrase&ntilde;a");
-								$('#malo_update2').css('display','inline')
-								$('#pswd2').focus()
-								$("#pswd2").val('');
-							}
-							else if(pswd2.length<6){
-								$('#malo_digitar2').html("El numero de caracteres debe ser mayor a 5");
-								$('#malo_update2').css('display','inline')
-								$('#pswd2').focus()
-								$("#pswd2").val('');
-							}
-							else if(n==1 || pswd.length!=pswd2.length){
-								$('#malo_digitar').html("Las conrase&ntilde;as deben coincidir");
-								$('#malo_update').css('display','inline')
-								//$('#pswd').val('')
-								//$('#pswd2').val('')
-								$('#pswd').focus()
-							}
-							else if(pswd != pswd2 || pswd.length!=pswd2.length){
-								$('#malo_digitar').html("Las conrase&ntilde;as deben coincidir");
-								$('#malo_update').css('display','inline')
-								//$('#pswd').val('')
-								//$('#pswd2').val('')
-								$('#pswd').focus()
-							}
-							else{
-								$.ajax({
- 				         			url: '../administracion/updateContra',  
- 				         			type: 'POST',
- 				        		    data: {
- 				        		    	pswd:pswd
- 				        		    },
- 				         			success: function(s){
- 				         				if(s==1){
- 				         					alert('No se puedo actualizar la informacion')
- 				         				}
- 				         				else{
- 				         					window.location="../administracion/";
- 				         				}
- 				         			}				
- 				        	   	});
-							}
-							
-							
-						}
-					}]
-				});
-				//$('.ui-dialog :button').blur();
-			}
-	})
 	
 	var tematico_combo
 	var tematico2_combo
@@ -157,6 +66,7 @@ $(document).ready(function() {
 		});
 		return datos_aseguram
 	}
+	
 
 	$('#criterios').change(function(){
 		criterios=$('#criterios').val()
@@ -168,6 +78,7 @@ $(document).ready(function() {
 			$('#criterios').popover('disable')
 			$('#criterios').popover('hide')
 			$('#criterios').popover('destroy')
+			
 			
 			$('#derivar_si').css('display','none')
 			$('#trazabilidad_si').css('display','none')
@@ -225,6 +136,7 @@ $(document).ready(function() {
 		
 			
 		if(criterios==0 || criterios=='0' || criterios==''){
+			
 			$('#criterios').popover({
 				html: true,
 				placement:'top',

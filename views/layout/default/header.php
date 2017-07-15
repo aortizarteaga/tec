@@ -13,44 +13,23 @@
 			
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<!-- Basic Styles -->
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/bootstrap.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/font-awesome.min.css">
-
-		<!-- SmartAdmin Styles : Caution! DO NOT change the order -->
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/smartadmin-production-plugins.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/smartadmin-production.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/smartadmin-skins.min.css">
-		
-		<!-- SmartAdmin RTL Support -->
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/smartadmin-rtl.min.css"> 
-
-		<!-- We recommend you use "your_style.css" to override SmartAdmin
-		     specific styles this will also ensure you retrain your customization with each SmartAdmin update.-->
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/your_style.css"> 
-		
-		<!-- Demo purpose only: goes with demo.js, you can delete this css when designing your own WebApp -->
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/demo.min.css">
-		
-		<!-- #FAVICONS -->
 		<link rel="shortcut icon" href="<?php echo BASE_URL ?>views/layout/default/img/favicon/telefonica.ico" type="image/x-icon">
 		<link rel="icon" href="<?php echo BASE_URL ?>views/layout/default/img/favicon/telefonica.ico" type="image/x-icon">
-
-		<!-- GOOGLE FONT -->
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">
-
-		<!-- Specifying a Webpage Icon for Web Clip 
-			 Ref: https://developer.apple.com/library/ios/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
 		<link rel="apple-touch-icon" href="<?php echo BASE_URL ?>views/layout/default/img/splash/sptouch-icon-iphone.png">
 		<link rel="apple-touch-icon" sizes="76x76" href="<?php echo BASE_URL ?>views/layout/default/img/splash/touch-icon-ipad.png">
 		<link rel="apple-touch-icon" sizes="120x120" href="<?php echo BASE_URL ?>views/layout/default/img/splash/touch-icon-iphone-retina.png">
 		<link rel="apple-touch-icon" sizes="152x152" href="<?php echo BASE_URL ?>views/layout/default/img/splash/touch-icon-ipad-retina.png">
-		
-		<!-- iOS web-app metas : hides Safari UI Components and Changes Status Bar Appearance -->
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		
-		<!-- Startup image for web apps -->
 		<link rel="apple-touch-startup-image" href="<?php echo BASE_URL ?>views/layout/default/img/splash/ipad-landscape.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:landscape)">
 		<link rel="apple-touch-startup-image" href="<?php echo BASE_URL ?>views/layout/default/img/splash/ipad-portrait.png" media="screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)">
 		<link rel="apple-touch-startup-image" href="<?php echo BASE_URL ?>views/layout/default/img/splash/iphone.png" media="screen and (max-device-width: 320px)">
@@ -75,9 +54,11 @@ $menu = array_unique ( $array );
 $menu = array_values ( $menu );
 $longitud = count ( $menu );
 
+
 $arraysito_pan='MENU_NADA';
 $arraysito_car='MENU_NADA';
 $arraysito_reg='MENU_NADA';
+$arraysito_cre='MENU_NADA';
 
 for($i = 0; $i < $longitud; $i ++) {
 	if ($menu [$i] == 'MENU_PAN') {
@@ -87,59 +68,19 @@ for($i = 0; $i < $longitud; $i ++) {
 	} else if ($menu [$i] == 'MENU_INICIAL') {
 		$arraysito_reg = 'MENU_INICIAL';
 	}
+	else if ($menu [$i] == 'MENU_USU') {
+		$arraysito_cre = 'MENU_USU';
+	}
 }
 
 $menu = array (
 		0 => $arraysito_pan,
 		1 => $arraysito_car,
-		2 => $arraysito_reg 
+		2 => $arraysito_reg, 
+		3 => $arraysito_cre
 );
 
 ?>
-	<!--
-
-	TABLE OF CONTENTS.
-	
-	Use search to find needed section.
-	
-	===================================================================
-	
-	|  01. #CSS Links                |  all CSS links and file paths  |
-	|  02. #FAVICONS                 |  Favicon links and file paths  |
-	|  03. #GOOGLE FONT              |  Google font link              |
-	|  04. #APP SCREEN / ICONS       |  app icons, screen backdrops   |
-	|  05. #BODY                     |  body tag                      |
-	|  06. #HEADER                   |  header tag                    |
-	|  07. #PROJECTS                 |  project lists                 |
-	|  08. #TOGGLE LAYOUT BUTTONS    |  layout buttons and actions    |
-	|  09. #MOBILE                   |  mobile view dropdown          |
-	|  10. #SEARCH                   |  search field                  |
-	|  11. #NAVIGATION               |  left panel & navigation       |
-	|  12. #RIGHT PANEL              |  right panel userlist          |
-	|  13. #MAIN PANEL               |  main panel                    |
-	|  14. #MAIN CONTENT             |  content holder                |
-	|  15. #PAGE FOOTER              |  page footer                   |
-	|  16. #SHORTCUT AREA            |  dropdown shortcuts area       |
-	|  17. #PLUGINS                  |  all scripts and plugins       |
-	
-	===================================================================
-	
-	-->
-	
-	<!-- #BODY -->
-	<!-- Possible Classes
-
-		* 'smart-style-{SKIN#}'
-		* 'smart-rtl'         - Switch theme mode to RTL
-		* 'menu-on-top'       - Switch to top navigation (no DOM change required)
-		* 'no-menu'			  - Hides the menu completely
-		* 'hidden-menu'       - Hides the main menu but still accessable by hovering over left edge
-		* 'fixed-header'      - Fixes the header
-		* 'fixed-navigation'  - Fixes the main menu
-		* 'fixed-ribbon'      - Fixes breadcrumb
-		* 'fixed-page-footer' - Fixes footer
-		* 'container'         - boxed layout mode (non-responsive: will not work with fixed-navigation & fixed-ribbon)
-	-->
 	<body class="">
 		<!-- HEADER -->
 		<header id="header">
@@ -251,6 +192,20 @@ $menu = array (
 							<ul>
 							<?php foreach ($_SESSION['menu'] as $submenu=>$value):?>
 												<?php if ($value[2]=='MENU_CAR'):?>
+													<li><a href="<?php echo BASE_URL . $value[3]?>"><span class="text"><?php echo $value[1]?></span></a></li>
+												<?php endif;?>
+							<?php endforeach;?>
+								
+							</ul>
+						</li>
+					<?php endif;?>
+					
+					<?php if ($menu[3]=='MENU_USU'):?>
+					<li class="top-menu-invisible">
+							<a href="#"><i class="fa fa-lg fa-fw fa-user-plus txt-color-blue"></i> <span class="menu-item-parent">Registro</span></a>
+							<ul>
+							<?php foreach ($_SESSION['menu'] as $submenu=>$value):?>
+												<?php if ($value[2]=='MENU_USU'):?>
 													<li><a href="<?php echo BASE_URL . $value[3]?>"><span class="text"><?php echo $value[1]?></span></a></li>
 												<?php endif;?>
 							<?php endforeach;?>

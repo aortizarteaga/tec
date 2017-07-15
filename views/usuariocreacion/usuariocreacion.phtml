@@ -1,0 +1,264 @@
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+
+	<!-- RIBBON -->
+	<div id="ribbon">
+		<!-- breadcrumb -->
+		<ol class="breadcrumb">
+			<li>Registro</li>
+			<li>Panel</li>
+			<li>Panel Creacion de Usuario</li>
+		</ol>
+	</div>
+	<!-- END RIBBON -->
+
+	<!-- MAIN CONTENT -->
+	<div id="content">
+		<!-- widget grid -->
+		<section id="widget-grid" class="">
+			<!-- START ROW -->
+			<div class="row">
+				<!-- NEW COL START -->
+				<article class="col-sm-12 col-md-12 col-lg-12">
+					<!-- Widget ID (each widget will need unique ID)-->
+					<div class="jarviswidget" id="wid-id-0" 
+						 data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+						
+						<!-- widget options:
+								usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+				
+								data-widget-colorbutton="false"
+								data-widget-editbutton="false"
+								data-widget-togglebutton="false"
+								data-widget-deletebutton="false"
+								data-widget-fullscreenbutton="false"
+								data-widget-custombutton="false"
+								data-widget-collapsed="true"
+								data-widget-sortable="false"
+				
+								-->
+						<header>
+							<span class="widget-icon"> <i class="fa fa-edit"></i>
+							</span>
+							<h2>Registro de Usuarios</h2>
+
+						</header>
+
+						<!-- widget div-->
+						<div>
+							<!-- widget edit box -->
+							<div class="jarviswidget-editbox">
+								<!-- This area used as dropdown edit box -->
+
+							</div>
+							<!-- end widget edit box -->
+
+							<!-- widget content -->
+							<div class="widget-body">
+								<form class="smart-form" id="formulario_guardar">
+									<header> Datos de Usuario </header>
+									<fieldset>
+										<div class="row">
+											<div class="form-group col-sm-6">
+												<section class="col col-2">
+													<label class="label">Nombres</label>
+												</section>
+												<section class="col col-4">
+													<label class="input" id="validacion_nombres"> <i class="icon-prepend fa fa-user"></i>
+														<input class="input-sm" type="text" id="nombre_usuario" name="nombre_usuario" placeholder="*Nombres Completos">
+													</label>
+												</section>
+												
+												<section class="col col-2">
+													<label class="label">Apellidos</label>
+												</section>
+												<section class="col col-4">
+													<label class="input" id="validacion_apellidos"> <i class="icon-prepend fa fa-user"></i>
+														<input class="input-sm" type="text" id="apellido_usuario" name="apellido_usuario" placeholder="*Apellidos Completos">
+													</label>
+												</section>
+											</div>
+											
+											<div class="form-group col-sm-6">
+												<section class="col col-2">
+													<label class="label">Tipo Doc</label>
+												</section>
+												<section class="col col-4">
+													<label class="select" id="validacion_tipodoc"> <select class="input-sm"
+														id="tipodoc_usuario" name="tipodoc_usuario">
+															<option value="">SELECCIONE</option>
+															<?php foreach($this->tipo_documento  as $indice =>$value):?>						
+															<option value="<?php echo $value[0] ?>"><?php echo $value[1] ?></option>
+															<?php  endforeach;?>
+													</select> <i></i>
+													</label>
+												</section>
+												
+												<section class="col col-2">
+													<label class="label">Documento</label>
+												</section>
+												<section class="col col-4">
+													<label class="input" id="validacion_documento"> <i class="icon-prepend fa fa-credit-card"></i>
+														<input class="input-sm" type="text" id="documento_usuario" name="documento_usuario" placeholder="*Documento">
+													</label>
+												</section>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="form-group col-sm-6">
+												<section class="col col-2">
+													<label class="label">Email</label>
+												</section>
+												<section class="col col-4">
+													<label class="input" id="validacion_email"> <i class="icon-prepend fa fa-envelope-o"></i>
+														<input class="input-sm" type="text" id="email_usuario" name="email_usuario" placeholder="Email">
+													</label>
+												</section>
+												
+												<section class="col col-2">
+													<label class="label">Telefono</label>
+												</section>
+												<section class="col col-4">
+													<label class="input" id="validacion_telefono"> <i class="icon-prepend fa fa-phone"></i>
+														<input class="input-sm" type="text" id="telefono_usuario" name=telefono_usuario" placeholder="Telefono">
+													</label>
+												</section>
+											</div>
+											
+											<div class="form-group col-sm-6">
+												<section class="col col-2">
+													<label class="label">Unidad</label>
+												</section>
+												<section class="col col-4">
+													<label class="input"> <i class="icon-prepend fa fa-building"></i>
+														<input class="input-sm" type="text" id="unidad_usuario" name="unidad_usuario" placeholder="Unidad">
+													</label>
+												</section>
+												
+												<section class="col col-2">
+													<label class="label">Area</label>
+												</section>
+												<section class="col col-4">
+													<label class="input"> <i class="icon-prepend fa fa-university"></i>
+														<input class="input-sm" type="text" id="area_usuario" name="area_usuario" placeholder="Area">
+													</label>
+												</section>
+											</div>
+										</div>
+									</fieldset>
+									
+									<header> Creacion de Usuario </header>
+									<fieldset>
+									<div class="row">
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Tipo Usuario</label>
+												</section>
+												<section class="col col-8">
+													<label class="select" id="validacion_tipouser"> <select class="input-sm" id="tipo_usuario" name="tipo_usuario">
+															<option value="">SELECCIONE</option>
+															<?php foreach($this->tipo_usuario  as $indice =>$value):?>						
+																<option value="<?php echo $value[0] ?>"><?php echo $value[1] ?></option>
+															<?php  endforeach;?>
+															</select> <i></i>
+													</label>
+												</section>
+
+											</div>
+											
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Tipo Perfil</label>
+												</section>
+												<section class="col col-8">
+													<label class="select" id="validacion_tipoperfil"> <select class="input-sm" id="tipo_perfil" name="tipo_perfil">
+															<option value="">SELECCIONE</option>
+															<?php foreach($this->tipo_perfil  as $indice =>$value):?>						
+																<option value="<?php echo $value[0] ?>"><?php echo $value[1] ?></option>
+															<?php  endforeach;?>
+															</select> <i></i>
+													</label>
+												</section>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Usuario</label>
+												</section>
+												<section class="col col-8">
+													<label class="input" id="validacion_idusuario"> <i class="icon-prepend fa fa-github-alt"></i>
+														<input class="input-sm" type="text" id="id_usuario" name="id_usuario" placeholder="*Usuario">
+													</label>
+												</section>
+											</div>
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Accesos</label>
+												</section>
+												<section class="col col-8">
+													<label class="select" id="validacion_accesos">
+														<select multiple class="select2 input-sm" id="tipo_acceso" name="tipo_acceso[]">
+															<?php foreach($this->tipo_acceso as $indice =>$value):?>
+																<option value="<?php echo $value[0] ?>"><?php echo $value[1] ?></option>
+															<?php  endforeach;?>
+														</select>
+													</label>
+												</section>
+											</div>
+										</div>
+										
+										<div class="row">
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Password</label>
+												</section>
+												<section class="col col-8">
+													<label class="input" id="validacion_pswd"> <i class="icon-prepend fa fa-unlock-alt"></i>
+														<input class="input-sm" type="password" id="password_usuario" name="password_usuario" placeholder="*Password">
+													</label>
+												</section>
+											</div>
+											<div class="form-group col-sm-6">
+												
+											</div>
+										</div>
+									
+									</fieldset>
+									<!-- </fieldset> -->
+								<!-- ui-dialog -->	
+								
+								<footer>
+									<button class="btn btn-primary" type="button" id="guardar">
+										<i class="fa fa-save" id="icono_guardar"></i>
+										Grabar
+									</button>
+									
+								</footer>
+													
+								</form>
+							</div>
+							<!-- end widget content -->	
+
+						</div>
+						<!-- end widget div -->
+
+					</div>
+					<!-- end widget -->
+
+				</article>
+				<!-- END COL -->
+
+			</div>
+
+			<!-- END ROW -->
+
+		</section>
+		<!-- end widget grid -->
+
+	</div>
+	<!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->

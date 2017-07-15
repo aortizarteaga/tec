@@ -4,6 +4,17 @@ class carpedController extends Controller{
 	
 	public function __construct(){
 		parent::__construct();
+		
+		if (!isset($_SESSION['user']))
+			$this->redireccionar ('index');
+		
+		$paginas_usuario= array_column($_SESSION['menu'], 'id_tec_pagina');
+		$pagina="MENU_CARGA";
+		$valores=in_array($pagina,$paginas_usuario);
+	
+		if($valores!=1){
+			$this->redireccionar ('index');
+		}
 	}
 	
 	public function index(){

@@ -729,75 +729,75 @@ $(document).ready(function() {
 		          "columns": [
 							{ "data": "tabla",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.tabla+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.tabla+"</p>")
 		 				         } 
 							},
 		                    { "data": "actividad",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.actividad+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.actividad+"</p>")
 		 				         }  
 							},{ "data": "casuistica",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.actividad+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.actividad+"</p>")
 		 				         }  
 							},{ "data": "motivo",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.actividad+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.actividad+"</p>")
 		 				         }  
 							},
 		                    { "data": "tematico1",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.tematico1+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.tematico1+"</p>")
 		 				         }  
 							},
 		                    { "data": "tematico2",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.tematico2+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.tematico2+"</p>")
 		 				         } 
 							},
 		                    { "data": "tematico3",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.tematico3+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.tematico3+"</p>")
 		 				         } 
 							},
 		                    { "data": "tematico4",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.tematico4+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.tematico4+"</p>")
 		 				         }  
 							},
 							{ "data": "obs_gestio",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.obs_gestio+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.obs_gestio+"</p>")
 		 				         }  
 							},
 		                    { "data": "nuevoped",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.nuevoped+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.nuevoped+"</p>")
 		 				         }  
 							},
 		                    { "data": "f_carga",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.f_carga+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.f_carga+"</p>")
 		 				         }  
 							},
 		                    { "data": "f_gestion",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.f_gestion+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.f_gestion+"</p>")
 		 				         } 
 							},
 							{ "data": "situacion",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.situacion+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.situacion+"</p>")
 		 				         }  
 							},
 							{ "data": "estado",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.estado+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.estado+"</p>")
 		 				         }  
 							},
 							{ "data": "descripcion",
 								"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-									$(nTd).html("<p style='font-weight: normal;font-size:11px;'>"+oData.descripcion+"</p>")
+									$(nTd).html("<p style='font-weight: normal'>"+oData.descripcion+"</p>")
 		 				         }  
 							}
 		                   ],
@@ -924,15 +924,6 @@ $(document).ready(function() {
 	  	            },
 		 			success: function(data){
 		 				if(data==0){
-							$('#pedido_trazabilidad').popover({
-								html: true,
-								placement:'top',
-								title: '<i class="fa fa-warning"></i> CORREGIR',
-								trigger: 'focus',
-								content: 'Pedido no encontrado en TEC'
-							});
-							$('#pedido_trazabilidad').focus()
-				
 		 					$('#error_trazabilidad_pedido').addClass('has-error')
 		 					$('#pedido_trazabilidad').removeClass('ui-autocomplete-loading')
 		 					$('#pedido_trazabilidad').focus()

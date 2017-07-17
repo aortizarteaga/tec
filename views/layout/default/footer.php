@@ -49,7 +49,15 @@
 		</section>
 	</fieldset>
 </form>
-</div>
+
+
+<div style="display: none;" id="logout_sesion" title="<div  class='widget-header'><h4><i class='fa fa-power-off'></i> Tu sesion ha expirado</h4></div>
+<form id="smart-form-register" class="smart-form client-form">
+	<fieldset>
+			 <p>Has estado inactivo por mucho tiempo. Por tu seguridad cierra sesion y vuelve a ingresar</p>
+	</fieldset>
+</form>
+
 <!-- Change Pasword -->
 		
 		<script data-pace-options='{ "restartOnRequestAfter": true }' src="<?php echo BASE_URL ?>views/layout/default/js/plugin/pace/pace.min.js"></script>
@@ -73,7 +81,7 @@
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/sparkline/jquery.sparkline.min.js"></script>
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/jquery-validate/jquery.validate.min.js"></script>
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
-		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/select2/select2.min.js"></script>->
+		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/select2/select2.min.js"></script>
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/fastclick/fastclick.min.js"></script>
@@ -88,22 +96,66 @@
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/smart-chat-ui/smart.chat.manager.min.js"></script>
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
 		<script src="<?php echo BASE_URL ?>views/layout/default/js/jquerystrength/dist/pwstrength-bootstrap.min.js"></script>
+		<script src="<?php echo BASE_URL ?>views/layout/default/js/plugin/idle_timer/idle-timer.js"></script>
 		
 		<script type="text/javascript">
+
+		$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
+			_title : function(title) {
+				if (!this.options.title) {
+					title.html("&#160;");
+				} else {
+					title.html(this.options.title);
+				}
+			}
+		}));
+
+		(function ($) {
+            var
+                session = {
+                    inactiveTimeout: 1500000,
+                    warningTimeout: 1500000     
+                }
+            ;
+
+            $(document).on("idle.idleTimer", function (event, elem, obj) {
+                var diff = (+new Date()) - obj.lastActive - obj.timeout, 
+                	warning = (+new Date()) - diff;
+
+                if (diff >= session.warningTimeout || warning <= session.minWarning) {
+                    //$("#mdlLoggedOut").modal("show");
+                } else {
+                    var dialog = $("#logout_sesion").dialog({
+						autoOpen : true,
+						width : 600,
+						resizable : false,
+						modal : true,
+						buttons : [ {
+							html : "<i class='fa fa-power-off'></i>&nbsp; Cerrar Sesion",
+							"class" : "btn btn-danger",
+							click : function() {
+								window.location="http://localhost:800/tec/";
+								}
+							}]
+						});
+
+                    $('.ui-dialog-titlebar-close').css('display','none')
+		            session.warningStart = (+new Date()) - diff;
+
+                }
+            });
+
+            //$(document).idleTimer(session.inactiveTimeout);
+            /* $(document).bind("idle.idleTimer", function () {
+            	session.inactiveTimeout
+            }) */
+
+            $.idleTimer(session.inactiveTimeout);
+        })(jQuery);
+		
 		$(document).ready(function() {
 
-			$.widget("ui.dialog", $.extend({}, $.ui.dialog.prototype, {
-				_title : function(title) {
-					if (!this.options.title) {
-						title.html("&#160;");
-					} else {
-						title.html(this.options.title);
-					}
-				}
-			}));
-
 			$('#ocultarse').click().change();
-			session="<?php echo $_SESSION['user'];?>";
 
 			//function udpdate_pswd(){
 			$.post('http://localhost:800/tec/administracion/updatePswd/', function(data) {

@@ -6,8 +6,7 @@
  * -------------------------------------
  */
 
-define('TIMEOUT',5);
-//define('BASE_URL', 'http://'.$_SERVER['SERVER_NAME'].'/aseguram/tec/');
+//define('TIMEOUT',5);
 define('BASE_URL', 'http://'.$_SERVER['SERVER_NAME'].':800/tec/');
 define('DEFAULT_CONTROLLER', 'index');
 define('DEFAULT_LAYOUT', 'default');

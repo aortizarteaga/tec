@@ -14,6 +14,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/bootstrap.min.css">
+		
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/smartadmin-production-plugins.min.css">
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/smartadmin-production.min.css">
@@ -21,6 +22,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/smartadmin-rtl.min.css"> 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/your_style.css"> 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo BASE_URL ?>views/layout/default/css/demo.min.css">
+		
 		<link rel="shortcut icon" href="<?php echo BASE_URL ?>views/layout/default/img/favicon/telefonica.ico" type="image/x-icon">
 		<link rel="icon" href="<?php echo BASE_URL ?>views/layout/default/img/favicon/telefonica.ico" type="image/x-icon">
 		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700">

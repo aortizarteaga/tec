@@ -1,20 +1,131 @@
 $(document).ready(function() {
 	pageSetUp();
-	/*
-	$('#password_usuario').pwstrength({
-        ui: { showVerdictsInsideProgressBar: true }
-    });
-	*/
 	
-	var options = {};
-    options.rules = {
-        activated: {
-            wordTwoCharacterClasses: true,
-            wordRepetitions: true
-        }
-    };
+	var responsiveHelper_datatable_fixed_column = undefined;
+	
+	var breakpointDefinition = {
+			tablet : 1024,
+			phone : 480
+		};
+	
+	responsiveHelper_datatable_fixed_column = undefined
+	$('#datatable_fixed_column').dataTable().fnDestroy();
+    var otable = $('#datatable_fixed_column').DataTable({
+    	"ajax": {
+	    	 "url":'../usuarioupdate/getUsuario',
+  	        	"type": 'POST',
+  	            "data": {}
+  	     },
+  	    "bAutoWidth": false,
+	    "autoWidth": false,
+	    "autoWidth" : true,
+	    "columns": [
+	                    { "data": "id_tec_usuario"},
+	                    { "data": "nombres"},
+	                    { "data": "apellidos" },
+	                    { "data": "documento" },
+	                    { "data": "area"  },
+	                    { "data": "fecha_registro" },
+	                    { "data": "flg_activo" },
+	                    { "data": "opciones",
+	                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+	                    		$(nTd).html("<center><a id_usuario='"+oData.id_tec_usuario+"' title='Actualizacion Usuario' class='usuario fa fa-edit'  style='cursor: pointer;display:inline;color: #3276b1;font-size:18px'></a></center>")
+	                    	}
+	                    }
+	                  ],
+		"sDom": "<'dt-toolbar'>"+"t"+"<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+		"preDrawCallback" : function() {
+			// Initialize the responsive datatables helper once.
+			if (!responsiveHelper_datatable_fixed_column) {
+				responsiveHelper_datatable_fixed_column = new ResponsiveDatatablesHelper($('#datatable_fixed_column'), breakpointDefinition);
+			}
+		},
+		"rowCallback" : function(nRow) {
+			responsiveHelper_datatable_fixed_column.createExpandIcon(nRow);
+		},
+		"drawCallback" : function(oSettings) {
+			responsiveHelper_datatable_fixed_column.respond();
+		}		
+	
+    });
+
+    $("#datatable_fixed_column thead th input[type=text]").on( 'keyup change', function () {
+    	
+        otable
+            .column( $(this).parent().index()+':visible' )
+            .search( this.value )
+            .draw();
+            
+    } );
+
     
-    $('#password_usuario').pwstrength(options);
+    $("#datatable_fixed_column tbody").on('click','a.usuario',function(){
+		 id_usuario= $(this).attr("id_usuario");
+		 $('#pedido_derivar').html("<strong>"+id_usuario+"</strong>")
+		 $('#usuario_actualizar').val(id_usuario)
+		 $('#modal_usuario').modal();
+		 
+		 $.post('../usuarioupdate/getUsuariodatos/' + id_usuario, function(data) {
+				
+				var myarray = data.split("|")
+				
+				$('#nombre_usuario').val(myarray[3].trim())
+				$('#apellido_usuario').val(myarray[4].trim())
+				$('#documento_usuario').val(myarray[7].trim())
+				$('#email_usuario').val(myarray[5].trim())
+				$('#telefono_usuario').val(myarray[8].trim())
+				$('#unidad_usuario').val(myarray[9].trim())
+				$('#area_usuario').val(myarray[10].trim())
+				
+				
+				combo_tipo_documento = document.forms["formulario_actualizar"].tipodoc_usuario;
+				cantidad_tipo_documento = combo_tipo_documento.length;
+				
+				for (i = 0; i < cantidad_tipo_documento; i++) {
+				 if(combo_tipo_documento[i].value ==myarray[6].trim()) {
+					 combo_tipo_documento[i].selected = true;
+					 }
+				}
+				
+				combo_tipo_usuario = document.forms["formulario_actualizar"].tipo_usuario;
+				cantidad_tipo_usuario = combo_tipo_usuario.length;
+				
+				for (i = 0; i < cantidad_tipo_usuario; i++) {
+				 if(combo_tipo_usuario[i].value ==myarray[1].trim()) {
+					 combo_tipo_usuario[i].selected = true;
+					 }
+				}
+				
+				combo_tipo_perfil = document.forms["formulario_actualizar"].tipo_perfil;
+				cantidad_tipo_perfil = combo_tipo_perfil.length;
+				
+				for (i = 0; i < cantidad_tipo_perfil; i++) {
+				 if(combo_tipo_perfil[i].value ==myarray[2].trim()) {
+					 combo_tipo_perfil[i].selected = true;
+					 }
+				}
+				
+				if(myarray[12].trim()=='Y'){
+					$('#chk_usuario').prop('checked',true)
+					$('#status_usuario').text('Activo')
+				}
+				else{
+					$('#chk_usuario').prop('checked',false)
+					$('#status_usuario').text('Inactivo')
+				}
+
+				
+			});
+    })
+    
+    $('#chk_usuario').change(function(){
+    	if ($('#chk_usuario').is(':checked')) {
+    		$('#status_usuario').text('Activo')
+    	}
+    	else{
+    		$('#status_usuario').text('Inactivo')
+    	}
+    })
     
     $('#nombre_usuario').keyup(function(){
 		$('#nombre_usuario').popover('disable')
@@ -72,26 +183,6 @@ $(document).ready(function() {
 		$('#validacion_tipoperfil').removeClass('state-error')
 	})
 	
-	$('#id_usuario').keyup(function(){
-		$('#id_usuario').popover('disable')
-		$('#id_usuario').popover('hide')
-		$('#id_usuario').popover('destroy')
-		$('#validacion_idusuario').removeClass('state-error')
-	})
-	
-	$('#password_usuario').keyup(function(){
-		$('#password_usuario').popover('disable')
-		$('#password_usuario').popover('hide')
-		$('#password_usuario').popover('destroy')
-		$('#validacion_pswd').removeClass('state-error')
-	})
-	
-	$('#tipo_acceso').change(function(){
-		$('#tipo_acceso').popover('disable')
-		$('#tipo_acceso').popover('hide')
-		$('#tipo_acceso').popover('destroy')
-		$('#validacion_accesos').removeClass('has-error')
-	})
     
     $('#guardar').click(function(){
     	var nombres=$('#nombre_usuario').val()
@@ -102,12 +193,10 @@ $(document).ready(function() {
     	var telefono=$('#telefono_usuario').val()
     	var tipousuario=$('#tipo_usuario').val()
     	var tipoperfil=$('#tipo_perfil').val()
-    	var usuario=$('#id_usuario').val()
     	var pswd=$('#password_usuario').val()
-    	var acceso=$('#tipo_acceso').val()
     	var re = /^(-)?[0-9]*$/;
     	var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;	
-    	var formData = new FormData($("#formulario_guardar")[0]);
+    	var formData = new FormData($("#formulario_actualizar")[0]);
     	
     	if(nombres==''){
     		$('#nombre_usuario').popover({
@@ -208,50 +297,6 @@ $(document).ready(function() {
     		$('#validacion_tipoperfil').addClass('state-error')
 			$('#tipo_perfil').focus()
     	}
-    	else if(usuario==''){
-    		$('#id_usuario').popover({
-				html: true,
-				placement:'top',
-				title: 'CORREGIR',
-				trigger: 'focus',
-				content: 'Ingresar Nombre de Usuario'
-			});
-    		$('#validacion_idusuario').addClass('state-error')
-			$('#id_usuario').focus()
-    	}
-    	else if(pswd==''){
-    		$('#password_usuario').popover({
-				html: true,
-				placement:'top',
-				title: 'CORREGIR',
-				trigger: 'focus',
-				content: 'Ingresar Contraseña'
-			});
-    		$('#validacion_pswd').addClass('state-error')
-			$('#password_usuario').focus()
-    	}
-    	else if(pswd.length<6){
-    		$('#password_usuario').popover({
-				html: true,
-				placement:'top',
-				title: 'CORREGIR',
-				trigger: 'focus',
-				content: 'El password debe ser mayor a 5 letras'
-			});
-    		$('#validacion_pswd').addClass('state-error')
-			$('#password_usuario').focus()
-		}
-    	else if(acceso=='' || acceso==null){
-    		$('#tipo_acceso').popover({
-				html: true,
-				placement:'top',
-				title: 'CORREGIR',
-				trigger: 'focus',
-				content: 'Ingresar los accesos correspondientes'
-			});
-    		$('#validacion_accesos').addClass('has-error')
-			$('#tipo_acceso').focus()
-    	}
     	else{
     		$('#guardar').css('display', 'block'); 
     		$('#icono_guardar').removeClass('fa fa-save')
@@ -259,7 +304,7 @@ $(document).ready(function() {
     		$('#formulario_guardar').find('input, textarea, button, select').attr('disabled',true);
     		
     		$.ajax({
-	 			url: '../usuariocreacion/insertUser',  
+	 			url: '../usuarioupdate/updateUser',  
 	 			type: 'POST',
 	 			data:formData,
 	 			cache: false,
@@ -277,7 +322,7 @@ $(document).ready(function() {
 	 						timeout : 6000
 	 					});
 	 					$('#icono_guardar').removeClass('fa fa-cog fa-spin fa-fw')
-		 				$('#icono_guardar').addClass('fa fa-save')
+		 				$('#icono_guardar').addClass('fa fa-refresh')
 	 					e.preventDefault();
 	 				}
 					else if(data==2){
@@ -291,10 +336,10 @@ $(document).ready(function() {
 	 						timeout : 6000
 	 					});
 	 					$('#icono_guardar').removeClass('fa fa-cog fa-spin fa-fw')
-		 				$('#icono_guardar').addClass('fa fa-save')
+		 				$('#icono_guardar').addClass('fa fa-refresh')
 	 					e.preventDefault();
 	 				}
-					else{
+					else if(data==0){
 	 					$.bigBox({
 		 					title : "USUARIO REGISTRADO",
 		 					content : "El usuario se registro correctamente",
@@ -303,17 +348,37 @@ $(document).ready(function() {
 		 					icon : "fa fa-check",
 		 					//number : "4"
 		 				}, function() {
-		 					//closedthis();
+		 					closedthis();
+		 					//window.location = "../usuarioupdate/"
 		 				});
 		 				e.preventDefault();
 		 				$('#icono_guardar').removeClass('fa fa-cog fa-spin fa-fw')
-		 				$('#icono_guardar').addClass('fa fa-save')
+		 				$('#icono_guardar').addClass('fa fa-refresh')
 					}
+					else{
+	 					$('#modal_derivar').modal('hide');
+	 					$.bigBox({
+	 						title : "Error",
+	 						content : "Falla",
+	 						color : "#C46A69",
+	 						//timeout: 6000,
+	 						icon : "fa fa-warning shake animated",
+	 						timeout : 6000
+	 					});
+	 					$('#icono_guardar').removeClass('fa fa-cog fa-spin fa-fw')
+		 				$('#icono_guardar').addClass('fa fa-refresh')
+	 					e.preventDefault();
+	 				}
 	 				
 	 			}  
 			})
     		
     	}
     })
+    
+    function closedthis() {
+    	window.location = "../usuarioupdate/"
+	}
+    
 
 })

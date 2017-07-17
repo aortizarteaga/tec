@@ -1,0 +1,297 @@
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+
+	<!-- RIBBON -->
+	<div id="ribbon">
+		<!-- breadcrumb -->
+		<ol class="breadcrumb">
+			<li>Registro</li>
+			<li>Panel</li>
+			<li>Panel Actualizacion de Usuario</li>
+		</ol>
+	</div>
+	<!-- END RIBBON -->
+
+	<!-- MAIN CONTENT -->
+	<div id="content">
+		<!-- widget grid -->
+		<section id="widget-grid" class="">
+			<!-- START ROW -->
+			<div class="row">
+				<!-- NEW COL START -->
+				<article class="col-sm-12 col-md-12 col-lg-12">
+					<!-- Widget ID (each widget will need unique ID)-->
+					<div class="jarviswidget" id="wid-id-0" 
+						 data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-custombutton="false">
+						 
+						<header>
+							<span class="widget-icon"> <i class="fa fa-edit"></i>
+							</span>
+							<h2>Registro de Usuarios</h2>
+
+						</header>
+
+						<!-- widget div-->
+						<div>
+
+								<table id="datatable_fixed_column" class="table table-striped table-bordered" width="100%">
+
+									<thead>
+										<tr>
+											<th class="hasinput" style="width: 10%"><input type="text" class="form-control" placeholder="Usuario" /></th>
+											<th class="hasinput" style="width: 17%"><input type="text" class="form-control" placeholder="Nombres" /></th>
+											<th class="hasinput" style="width: 17%"><input type="text" class="form-control" placeholder="Apellidos" /></th>
+											<th class="hasinput" style="width: 12%"><input type="text" class="form-control" placeholder="Documento" /></th>
+											<th class="hasinput" style="width: 12%"><input type="text" class="form-control" placeholder="Area" /></th>
+											<th class="hasinput icon-addon"><input id="dateselect_filter"
+												type="text" placeholder="Fecha Registro"
+												class="form-control datepicker" data-dateformat="yy-mm-dd"> <label
+												for="dateselect_filter"
+												class="glyphicon glyphicon-calendar no-margin padding-top-15"
+												rel="tooltip" title="" data-original-title="Filter Date"></label>
+											</th>
+											<th class="hasinput" style="width: 8%"><input type="text" class="form-control" placeholder="Estado" /></th
+										</tr>
+										<tr>
+											<th data-class="expand">Usuario</th>
+											<th>Nombres</th>
+											<th data-hide="phone">Apellidos</th>
+											<th data-hide="phone">Documento</th>
+											<th data-hide="phone,tablet">Area</th>
+											<th data-hide="phone,tablet">Fecha Registro</th>
+											<th data-hide="phone,tablet">Estado</th>
+											<th data-hide="phone,tablet">Opciones</th>
+										</tr>
+									</thead>
+	
+									<tbody>
+									</tbody>
+									
+								</table>
+
+						</div>
+						<!-- end widget div -->
+
+					</div>
+					<!-- end widget -->
+
+				</article>
+				<!-- END COL -->
+
+			</div>
+
+			<!-- END ROW -->
+
+		</section>
+		<!-- end widget grid -->
+
+	</div>
+	<!-- END MAIN CONTENT -->
+</div>
+<!-- END MAIN PANEL -->
+
+<!-- Modal -->
+<div class="modal fade" id="modal_usuario" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="titulo_derivar">
+					<img src="<?php echo BASE_URL ?>views/layout/default/img/telefonica_logo.png" width="150" alt="Telefonica">
+					&nbsp;&nbsp;&nbsp;Actualizacion de Usuario&nbsp;&nbsp;  <i class='fa fa-refresh'></i>
+				</h4>
+			</div>
+			
+			<div class="modal-body no-padding">
+			<form class="smart-form" id="formulario_actualizar" name="formulario_actualizar">
+			<header> Datos de Usuario </header>
+					<fieldset>
+						<section>
+							<div class="row">
+								<section class="col col-2">
+									<label class="label">Usuario</label>
+								</section>
+								<section class="col col-3">
+									<label class="input"> 
+									<label class="label" id="pedido_derivar"
+										name="pedido_derivar"></label></label>
+										<input class="input-sm"
+										type="text" id="usuario_actualizar" name="usuario_actualizar" style="display: none;">
+								</section>
+							</div>
+						</section>
+
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<section class="col col-3">
+									<label class="label">Nombres</label>
+								</section>
+								<section class="col col-9">
+									<label class="input" id="validacion_nombres"> <i
+										class="icon-prepend fa fa-user"></i> <input class="input-sm"
+										type="text" id="nombre_usuario" name="nombre_usuario"
+										placeholder="*Nombres Completos">
+									</label>
+								</section>
+							</div>
+							<div class="form-group col-sm-6">
+								<section class="col col-3">
+									<label class="label">Apellidos</label>
+								</section>
+								<section class="col col-9">
+									<label class="input" id="validacion_apellidos"> <i
+										class="icon-prepend fa fa-user"></i> <input class="input-sm"
+										type="text" id="apellido_usuario" name="apellido_usuario"
+										placeholder="*Apellidos Completos">
+									</label>
+								</section>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="form-group col-sm-6">
+								<section class="col col-3">
+									<label class="label">T. Doc</label>
+								</section>
+								<section class="col col-9">
+									<label class="select" id="validacion_tipodoc"> 
+									<select class="input-sm" id="tipodoc_usuario" name="tipodoc_usuario">
+											<option value="">SELECCIONE</option>
+															<?php foreach($this->tipo_documento  as $indice =>$value):?>						
+															<option value="<?php echo $value[0] ?>"><?php echo $value[1] ?></option>
+															<?php  endforeach;?>
+													</select> <i></i>
+									</label>
+								</section>
+							</div>
+							<div class="form-group col-sm-6">
+								<section class="col col-3">
+									<label class="label">Documento</label>
+								</section>
+								<section class="col col-9">
+									<label class="input" id="validacion_documento"> <i
+										class="icon-prepend fa fa-credit-card"></i> <input
+										class="input-sm" type="text" id="documento_usuario"
+										name="documento_usuario" placeholder="*Documento">
+									</label>
+								</section>
+							</div>
+						</div>
+						
+						<div class="row">
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Email</label>
+												</section>
+												<section class="col col-9">
+													<label class="input" id="validacion_email"> <i class="icon-prepend fa fa-envelope-o"></i>
+														<input class="input-sm" type="text" id="email_usuario" name="email_usuario" placeholder="Email">
+													</label>
+												</section>
+												</div>
+												<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Telefono</label>
+												</section>
+												<section class="col col-9">
+													<label class="input" id="validacion_telefono"> <i class="icon-prepend fa fa-phone"></i>
+														<input class="input-sm" type="text" id="telefono_usuario" name=telefono_usuario" placeholder="Telefono">
+													</label>
+												</section>
+											</div>
+							</div>
+							<div class="row">				
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Unidad</label>
+												</section>
+												<section class="col col-9">
+													<label class="input"> <i class="icon-prepend fa fa-building"></i>
+														<input class="input-sm" type="text" id="unidad_usuario" name="unidad_usuario" placeholder="Unidad">
+													</label>
+												</section>
+												</div>
+												<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Area</label>
+												</section>
+												<section class="col col-9">
+													<label class="input"> <i class="icon-prepend fa fa-university"></i>
+														<input class="input-sm" type="text" id="area_usuario" name="area_usuario" placeholder="Area">
+													</label>
+												</section>
+											</div>
+										</div>
+
+					</fieldset>
+					
+					<header> Creacion de Usuario </header>
+					<fieldset>
+					<div class="row">
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Tipo Usuario</label>
+												</section>
+												<section class="col col-8">
+													<label class="select" id="validacion_tipouser"> <select class="input-sm" id="tipo_usuario" name="tipo_usuario">
+															<option value="">SELECCIONE</option>
+															<?php foreach($this->tipo_usuario  as $indice =>$value):?>						
+																<option value="<?php echo $value[0] ?>"><?php echo $value[1] ?></option>
+															<?php  endforeach;?>
+															</select> <i></i>
+													</label>
+												</section>
+
+											</div>
+											
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Tipo Perfil</label>
+												</section>
+												<section class="col col-8">
+													<label class="select" id="validacion_tipoperfil"> <select class="input-sm" id="tipo_perfil" name="tipo_perfil">
+															<option value="">SELECCIONE</option>
+															<?php foreach($this->tipo_perfil  as $indice =>$value):?>						
+																<option value="<?php echo $value[0] ?>"><?php echo $value[1] ?></option>
+															<?php  endforeach;?>
+															</select> <i></i>
+													</label>
+												</section>
+											</div>
+										</div>
+										
+							<div class="row">
+											
+											<div class="form-group col-sm-6">
+												<section class="col col-3">
+													<label class="label">Estatus</label>
+												</section>
+												<section class="col col-8">
+															<label>
+															  <input type="checkbox" id="chk_usuario" name="chk_usuario" class="checkbox style-0">
+															  <span id="status_usuario"></span>
+															</label>
+												</section>
+											</div>
+										</div>
+					
+					
+					</fieldset>
+					
+					
+					<footer>
+						<button class="btn btn-primary" type="button" id="guardar">
+										<i class="fa fa-save" id="icono_guardar"></i>
+										Actualizar
+									</button>
+					</footer>
+				</form>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

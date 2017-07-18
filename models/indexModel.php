@@ -79,7 +79,7 @@ class indexModel extends Model {
 		$prod = $this->_db->prepare($sql);
 		$prod->execute();
 	
-		return $prod->fetchAll();
+		return $prod->fetchAll(PDO::FETCH_ASSOC);
 	
 	}
 	

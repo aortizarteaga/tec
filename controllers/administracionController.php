@@ -5,12 +5,17 @@ class administracionController extends Controller {
 		if (!isset($_SESSION['user']))
 			$this->redireccionar ('index');
 		
-		$paginas_usuario= array_column($_SESSION['menu'], 'id_tec_pagina');
+		$paginas_usuario= $_SESSION['menu_completo'];
 		$pagina="MENU_ADMINISTRACION";
-		$valores=in_array($pagina,$paginas_usuario);
 		
-		if($valores!=1){
-			$this->redireccionar ('index');
+		foreach($paginas_usuario as $key=>$value){
+			$array[]=$value["id_tec_pagina"];
+		}
+		
+		$valores=in_array($pagina,$array);
+		
+		if($valores<=0){
+			$this->redireccionar ('error');
 		}
 	}
 	

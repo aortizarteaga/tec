@@ -53,7 +53,11 @@ class View
 			include_once $rutaView;
 		}
 		else {
-			throw new Exception('Error de vista');
+			$rutaView = ROOT . 'views' . DS . 'error500' . DS . $vista . '.phtml';
+			include_once ROOT . 'views'. DS . 'layout' . DS . DEFAULT_LAYOUT . DS . 'header.php';
+			include_once $rutaView;
+			include_once ROOT . 'views'. DS . 'layout' . DS . DEFAULT_LAYOUT . DS . 'footer.php';
+			//throw new Exception('Error de vista');
 		}
 	}
 

@@ -1,0 +1,17 @@
+<?php
+class error500Controller extends Controller {
+	public function __construct() {
+		parent::__construct ();
+		if (!isset($_SESSION['user'])){
+			$this->redireccionar ('index');
+		}
+			
+	}
+	
+	public function index() {
+		$this->_view->renderizar ( 'error500' );
+	}
+	
+}
+
+?>

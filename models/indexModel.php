@@ -72,14 +72,16 @@ class indexModel extends Model {
 		
 	}
 	
-	public function getMenucompleto(){
+	public function getMenucompleto($user){
 	
-		$sql="SELECT p.id_tec_pagina FROM `ase_tec_pagina` p ORDER BY p.prioridad";
+		$sql="SELECT p.id_tec_pagina  FROM `ase_tec_usuario_pagina` up,`ase_tec_pagina` p
+			 WHERE up.id_tec_pagina=p.id_tec_pagina AND
+			 up.usuario_permiso='$user' ORDER BY p.tipo,p.prioridad";
 	
 		$prod = $this->_db->prepare($sql);
 		$prod->execute();
 	
-		return $prod->fetchAll(PDO::FETCH_ASSOC);
+		return $prod->fetchAll();
 	
 	}
 	

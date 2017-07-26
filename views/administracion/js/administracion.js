@@ -376,6 +376,9 @@ $(document).ready(function() {
 		$('#trazabilidad_si').css('display','none')
 		$('#opciones_trazabilidad_pedido').css('display','none')
 		$('#error_trazabilidad_pedido').css('display','none')
+		$('#error_trazabilidad_pedido').removeClass('has-error')
+		$('#pedido_trazabilidad').removeClass('ui-autocomplete-loading')
+		$('#pedido_trazabilidad').val('')
 		
 		responsiveHelper_dt_basic = undefined
 			$('#dt_basic').dataTable().fnDestroy();
@@ -406,6 +409,7 @@ $(document).ready(function() {
 		                    		$(nTd).html(""+data+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a id_codigo='"+oData.codigo_pedido+"' class='bitacora fa fa-archive' title='Consultar Trazabilidad' style='"+icono+"'></a>")
 		                    	} 
 		                    },
+		                    { "data": "fecha_registro_pedido" },
 		                    { "data": "fecha_registro_registro" },
 		                    { "data": "estado_movimiento" ,
 		                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
@@ -425,35 +429,32 @@ $(document).ready(function() {
 		                    { "data": "fecha_ultimo_movimiento" },
 		                    { "data": "opciones",
 		                    	"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-		                    		
-		                    			resultado = datosTec(oData.codigo_pedido);
-										resultado_aseguram = datosAseguramiento(oData.codigo_pedido);
-										
-										tec='cursor: pointer;display:inline;color: #005c84;font-size:18px'
-										aseguramiento='cursor: pointer;display:inline;color: #48c400;font-size:18px'
-										derivar='cursor: pointer;display:inline;color: red;font-size:18px'
-												
-										if(oData.codigo_pedido!=''){
-					                    		if(resultado==0){
-												tec='cursor: pointer;display:none;color: #005c84;font-size:18px'
-											}
-											else{
-												tec='cursor: pointer;display:inline;color: #005c84;font-size:18px'
-											}
-											
-											if(resultado_aseguram==0){
-												aseguramiento='cursor: pointer;display:none;color: #48c400;font-size:18px'
-											}
-											else{
-												aseguramiento='cursor: pointer;display:inline;color: #48c400;font-size:18px'
-											}
-										}else{
-											tec='cursor: pointer;display:none;color: #005c84;font-size:18px'
-											aseguramiento='cursor: pointer;display:none;color: #48c400;font-size:18px'
-											derivar='cursor: pointer;display:none;color: red;font-size:18px'
-										}
-										
+		                    	resultado = datosTec(oData.codigo_pedido);
+								resultado_aseguram = datosAseguramiento(oData.codigo_pedido);
 								
+								tec='cursor: pointer;display:inline;color: #005c84;font-size:18px'
+								aseguramiento='cursor: pointer;display:inline;color: #48c400;font-size:18px'
+								derivar='cursor: pointer;display:inline;color: red;font-size:18px'
+										
+								if(oData.codigo_pedido!=''){
+			                    		if(resultado==0){
+										tec='cursor: pointer;display:none;color: #005c84;font-size:18px'
+									}
+									else{
+										tec='cursor: pointer;display:inline;color: #005c84;font-size:18px'
+									}
+									
+									if(resultado_aseguram==0){
+										aseguramiento='cursor: pointer;display:none;color: #48c400;font-size:18px'
+									}
+									else{
+										aseguramiento='cursor: pointer;display:inline;color: #48c400;font-size:18px'
+									}
+								}else{
+									tec='cursor: pointer;display:none;color: #005c84;font-size:18px'
+									aseguramiento='cursor: pointer;display:none;color: #48c400;font-size:18px'
+									derivar='cursor: pointer;display:none;color: red;font-size:18px'
+								}
 		                    		$(nTd).html("<center><a id_codigo='"+oData.codigo_pedido+"' title='Consultar Aseguramiento' class='aseguramiento fa fa-database'  style='"+aseguramiento+"'></a>" +
 		                    				"&nbsp;&nbsp;&nbsp;<a id_codigo='"+oData.codigo_pedido+"' title='Derivar' class='derivar fa fa-mail-forward'  style='"+derivar+"'></a>"+
 		                    				"&nbsp;&nbsp;&nbsp;<a id_codigo='"+oData.codigo_pedido+"' title='Trazabilidad TEC' class='tec fa fa-hdd-o'  style='"+tec+"'></a></center>")
@@ -489,7 +490,18 @@ $(document).ready(function() {
 		           		},
 		           	"drawCallback" : function(oSettings) {
 		           			responsiveHelper_dt_basic.respond();
-		           		}
+		           		},
+		           "fnDrawCallback": function (oSettings) {
+		        	   var conteo=$('#dt_basic').dataTable().fnGetData().length
+		        	   
+		        	   if(conteo>=1){
+		        		  $('#buscar').css('display','inline') 
+		        		  $('#icono_reloaded').css('display','none')
+		        		  $('#criterios').attr('disabled', false); 
+		        		  $('#criterio_digitar').attr('disabled', false); 
+		        	   }
+	                //console.log('Total row count on load - ', $('#dt_basic').dataTable().fnGetData().length);
+	            },
 			});
 	}
 	
@@ -685,6 +697,8 @@ $(document).ready(function() {
 	$("#dt_basic tbody").on('click','a.derivar',function(){
 		 idcodigo = $(this).attr("id_codigo");
 		 $('#enviado_boton_derivar').val('')
+		 
+		 $('#formulario_derivar').find('input, textarea, button, select').attr('disabled',false);
 		 
 		 $('#pedido_derivar_input').css('display','none')
 		 $('#pedido_derivar').css('display','block')
@@ -1451,8 +1465,8 @@ $(document).ready(function() {
 			$('#obs_derivar').focus()
 		}	
 		else{
-			$('#btn_enviar').css('display','none')
-				 setTimeout(function(){
+			//$('#btn_enviar').css('display','none')
+			$('#formulario_derivar').find('input, textarea, button, select').attr('disabled',true);
 					 $.ajax({
 				 			url: '../administracion/insertDerivar',  
 				 			type: 'POST',
@@ -1463,7 +1477,7 @@ $(document).ready(function() {
 								//document.write(data)
 								//alert(data)
 				 				if(data==1){
-				 					$('#modal_derivar').modal('hide');
+				 					
 				 					$.bigBox({
 				 						title : "Error",
 				 						content : "No se derivo correctamente, fallo en reiteracion",
@@ -1472,11 +1486,11 @@ $(document).ready(function() {
 				 						icon : "fa fa-warning shake animated",
 				 						timeout : 6000
 				 					});
-				 			
+				 					$('#formulario_derivar').find('input, textarea, button, select').attr('disabled',false);
 				 					e.preventDefault();
 				 				}
 								else if(data==2){
-				 					$('#modal_derivar').modal('hide');
+				 					
 				 					$.bigBox({
 				 						title : "Error",
 				 						content : "No sepuede derivar, fallo en derivar tec",
@@ -1485,11 +1499,11 @@ $(document).ready(function() {
 				 						icon : "fa fa-warning shake animated",
 				 						timeout : 6000
 				 					});
-				 			
+				 					$('#formulario_derivar').find('input, textarea, button, select').attr('disabled',false);
 				 					e.preventDefault();
 				 				}
 				 				else if(data==3){
-				 					$('#modal_derivar').modal('hide');
+				 					
 				 					$.bigBox({
 				 						title : "Error",
 				 						content : "No sepuede derivar, fallo en derivar movimientos tec",
@@ -1498,11 +1512,11 @@ $(document).ready(function() {
 				 						icon : "fa fa-warning shake animated",
 				 						timeout : 6000
 				 					});
-				 			
+				 					$('#formulario_derivar').find('input, textarea, button, select').attr('disabled',false);
 				 					e.preventDefault();
 				 				}
 								else if(data==4){
-				 					$('#modal_derivar').modal('hide');
+				 					
 				 					$.bigBox({
 				 						title : "Error",
 				 						content : "No sepuede derivar, no se pudieron actualizar los cambios en TEC",
@@ -1511,11 +1525,11 @@ $(document).ready(function() {
 				 						icon : "fa fa-warning shake animated",
 				 						timeout : 6000
 				 					});
-				 			
+				 					$('#formulario_derivar').find('input, textarea, button, select').attr('disabled',false);
 				 					e.preventDefault();
 				 				}
 								else if(data==5){
-				 					$('#modal_derivar').modal('hide');
+				 					
 				 					$.bigBox({
 				 						title : "Error",
 				 						content : "No sepuede derivar, fallo en derivar movimientos tec",
@@ -1524,28 +1538,28 @@ $(document).ready(function() {
 				 						icon : "fa fa-warning shake animated",
 				 						timeout : 6000
 				 					});
-				 			
+				 					$('#formulario_derivar').find('input, textarea, button, select').attr('disabled',false);
 				 					e.preventDefault();
 				 				}
 								else if(data==3){
-				 					$('#modal_derivar').modal('hide');
+				 					
 				 					$.bigBox({
 				 						title : "Error",
-				 						content : "No sepuede derivar, fallo en derivar movimientos tec",
+				 						content : "No se puede derivar, fallo en derivar movimientos tec",
 				 						color : "#C46A69",
 				 						//timeout: 6000,
 				 						icon : "fa fa-warning shake animated",
 				 						timeout : 6000
 				 					});
-				 			
+				 					$('#formulario_derivar').find('input, textarea, button, select').attr('disabled',false);
 				 					e.preventDefault();
 				 				}
 				 				else{
+				 					
 									if(manual_derivar!=1){
 										tabla_tec()
 									}
-									tabla_principal()
-				 					$('#modal_derivar').modal('hide');
+				 					
 				 					$.bigBox({
 					 					title : "PEDIDO DERIVADO",
 					 					content : "El pedido se derivo correctamente al area de TEC para su gestion, gracias",
@@ -1556,11 +1570,12 @@ $(document).ready(function() {
 					 				}, function() {
 					 					//closedthis();
 					 				});
-					 				e.preventDefault();
+				 					tabla_principal()
+				 					$('#formulario_derivar').find('input, textarea, button, select').attr('disabled',true);
+				 					e.preventDefault();
 				 				}
 				 			}				
 					   	});
-				 }, 500);
 		}
 	})
 	

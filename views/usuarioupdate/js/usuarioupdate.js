@@ -298,10 +298,10 @@ $(document).ready(function() {
 			$('#tipo_perfil').focus()
     	}
     	else{
-    		$('#guardar').css('display', 'block'); 
+    		//$('#guardar').css('display', 'block'); 
     		$('#icono_guardar').removeClass('fa fa-save')
     		$('#icono_guardar').addClass('fa fa-cog fa-spin fa-fw')
-    		$('#formulario_guardar').find('input, textarea, button, select').attr('disabled',true);
+    		$('#formulario_actualizar').find('input, textarea, button, select').attr('disabled',true);
     		
     		$.ajax({
 	 			url: '../usuarioupdate/updateUser',  
@@ -312,7 +312,7 @@ $(document).ready(function() {
 	 			processData: false,
 	 			success: function(data){
 	 				if(data==1){
-	 					$('#modal_derivar').modal('hide');
+	 					
 	 					$.bigBox({
 	 						title : "Error",
 	 						content : "Falla en el registro de usuario",
@@ -321,12 +321,13 @@ $(document).ready(function() {
 	 						icon : "fa fa-warning shake animated",
 	 						timeout : 6000
 	 					});
+	 					$('#formulario_actualizar').find('input, textarea, button, select').attr('disabled',false);
 	 					$('#icono_guardar').removeClass('fa fa-cog fa-spin fa-fw')
 		 				$('#icono_guardar').addClass('fa fa-refresh')
 	 					e.preventDefault();
 	 				}
 					else if(data==2){
-	 					$('#modal_derivar').modal('hide');
+	 					
 	 					$.bigBox({
 	 						title : "Error",
 	 						content : "Falla en los accesos",
@@ -335,6 +336,7 @@ $(document).ready(function() {
 	 						icon : "fa fa-warning shake animated",
 	 						timeout : 6000
 	 					});
+	 					$('#formulario_actualizar').find('input, textarea, button, select').attr('disabled',false);
 	 					$('#icono_guardar').removeClass('fa fa-cog fa-spin fa-fw')
 		 				$('#icono_guardar').addClass('fa fa-refresh')
 	 					e.preventDefault();
@@ -351,12 +353,13 @@ $(document).ready(function() {
 		 					closedthis();
 		 					//window.location = "../usuarioupdate/"
 		 				});
-		 				e.preventDefault();
+	 					
 		 				$('#icono_guardar').removeClass('fa fa-cog fa-spin fa-fw')
 		 				$('#icono_guardar').addClass('fa fa-refresh')
+		 				e.preventDefault();
 					}
 					else{
-	 					$('#modal_derivar').modal('hide');
+	 					
 	 					$.bigBox({
 	 						title : "Error",
 	 						content : "Falla",
@@ -365,6 +368,7 @@ $(document).ready(function() {
 	 						icon : "fa fa-warning shake animated",
 	 						timeout : 6000
 	 					});
+	 					$('#formulario_actualizar').find('input, textarea, button, select').attr('disabled',false);
 	 					$('#icono_guardar').removeClass('fa fa-cog fa-spin fa-fw')
 		 				$('#icono_guardar').addClass('fa fa-refresh')
 	 					e.preventDefault();
@@ -377,7 +381,7 @@ $(document).ready(function() {
     })
     
     function closedthis() {
-    	window.location = "../usuarioupdate/"
+    	window.location="../usuarioupdate/";
 	}
     
 

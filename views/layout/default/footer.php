@@ -145,11 +145,6 @@
                 }
             });
 
-            //$(document).idleTimer(session.inactiveTimeout);
-            /* $(document).bind("idle.idleTimer", function () {
-            	session.inactiveTimeout
-            }) */
-
             $.idleTimer(session.inactiveTimeout);
         })(jQuery);
 		

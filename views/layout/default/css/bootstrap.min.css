@@ -6372,15 +6372,15 @@ button.close {
 }
 
 .modal-body {
-	/* position: relative;
-	padding: 20px */
+	position: relative;
+	padding: 20px;
 	
 	/* position: relative;
 	padding: 15px SE PUESO SCROLL */
 	
-	 height: 480px;
+	 height: 400px;
      overflow-y: auto;
-     verflow-x: none;
+     overflow-x:hidden;
 }
 
 .modal-footer {
